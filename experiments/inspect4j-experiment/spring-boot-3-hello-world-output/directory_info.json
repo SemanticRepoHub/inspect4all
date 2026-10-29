@@ -1,0 +1,530 @@
+{
+  "spring-boot-3-hello-world-output/spring-boot-3-hello-world/src/test/java/com/example/helloworld": [
+    {
+      "file": {
+        "path": "/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4j-experiment/spring-boot-3-hello-world/src/test/java/com/example/helloworld/HelloWorldApplicationTests.java",
+        "fileNameBase": "HelloWorldApplicationTests",
+        "extension": "java"
+      },
+      "package": {
+        "name": "com.example.helloworld"
+      },
+      "dependencies": [
+        {
+          "import": "HelloWorldController",
+          "type": "internal",
+          "type_element": "class",
+          "from_module": "com.example.helloworld.controller"
+        },
+        {
+          "import": "Test",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.junit.jupiter.api"
+        },
+        {
+          "import": "Autowired",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.beans.factory.annotation"
+        },
+        {
+          "import": "SpringBootTest",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.boot.test.context"
+        },
+        {
+          "import": "assertNotNull",
+          "type": "external",
+          "type_element": "static_member",
+          "from_module": "org.junit.jupiter.api.Assertions"
+        }
+      ],
+      "classes": {
+        "HelloWorldApplicationTests": {
+          "name": "HelloWorldApplicationTests",
+          "min_max_lineno": {
+            "min_lineno": 10,
+            "max_lineno": 20
+          },
+          "methods": {
+            "contextLoads": {
+              "name": "contextLoads",
+              "min_max_lineno": {
+                "min_lineno": 16,
+                "max_lineno": 20
+              },
+              "calls": [
+                "assertNotNull"
+              ],
+              "annotations": [
+                {
+                  "name": "Test",
+                  "type": "annotation"
+                }
+              ]
+            }
+          },
+          "fields": {
+            "helloWorldController": {
+              "name": "helloWorldController",
+              "type": "HelloWorldController",
+              "modifiers": [
+                "private"
+              ],
+              "annotations": [
+                {
+                  "name": "Autowired",
+                  "type": "annotation"
+                }
+              ]
+            }
+          },
+          "annotations": [
+            {
+              "name": "SpringBootTest",
+              "type": "annotation"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "spring-boot-3-hello-world-output/spring-boot-3-hello-world/src/test/java/com/example/helloworld/controller": [
+    {
+      "file": {
+        "path": "/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4j-experiment/spring-boot-3-hello-world/src/test/java/com/example/helloworld/controller/HelloWorldControllerTest.java",
+        "fileNameBase": "HelloWorldControllerTest",
+        "extension": "java"
+      },
+      "package": {
+        "name": "com.example.helloworld.controller"
+      },
+      "dependencies": [
+        {
+          "import": "Test",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.junit.jupiter.api"
+        },
+        {
+          "import": "Autowired",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.beans.factory.annotation"
+        },
+        {
+          "import": "AutoConfigureMockMvc",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.boot.test.autoconfigure.web.servlet"
+        },
+        {
+          "import": "SpringBootTest",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.boot.test.context"
+        },
+        {
+          "import": "MockMvc",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.test.web.servlet"
+        },
+        {
+          "import": "get",
+          "type": "external",
+          "type_element": "static_member",
+          "from_module": "org.springframework.test.web.servlet.request.MockMvcRequestBuilders"
+        },
+        {
+          "import": "content",
+          "type": "external",
+          "type_element": "static_member",
+          "from_module": "org.springframework.test.web.servlet.result.MockMvcResultMatchers"
+        },
+        {
+          "import": "status",
+          "type": "external",
+          "type_element": "static_member",
+          "from_module": "org.springframework.test.web.servlet.result.MockMvcResultMatchers"
+        }
+      ],
+      "classes": {
+        "HelloWorldControllerTest": {
+          "name": "HelloWorldControllerTest",
+          "modifiers": [
+            "public"
+          ],
+          "min_max_lineno": {
+            "min_lineno": 13,
+            "max_lineno": 26
+          },
+          "methods": {
+            "shouldReturnExpectedMessage": {
+              "name": "shouldReturnExpectedMessage",
+              "modifiers": [
+                "public"
+              ],
+              "min_max_lineno": {
+                "min_lineno": 20,
+                "max_lineno": 26
+              },
+              "calls": [
+                "MockMvc.perform",
+                "expr.andExpect",
+                "status",
+                "expr.isOk",
+                "expr.andExpect",
+                "content",
+                "expr.string",
+                "get(String)"
+              ],
+              "annotations": [
+                {
+                  "name": "Test",
+                  "type": "annotation"
+                }
+              ]
+            }
+          },
+          "fields": {
+            "mockMvc": {
+              "name": "mockMvc",
+              "type": "MockMvc",
+              "modifiers": [
+                "private"
+              ],
+              "annotations": [
+                {
+                  "name": "Autowired",
+                  "type": "annotation"
+                }
+              ]
+            }
+          },
+          "annotations": [
+            {
+              "name": "SpringBootTest",
+              "type": "annotation"
+            },
+            {
+              "name": "AutoConfigureMockMvc",
+              "type": "annotation"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "spring-boot-3-hello-world-output/spring-boot-3-hello-world/src/main/java/com/example/helloworld": [
+    {
+      "file": {
+        "path": "/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4j-experiment/spring-boot-3-hello-world/src/main/java/com/example/helloworld/HelloWorldApplication.java",
+        "fileNameBase": "HelloWorldApplication",
+        "extension": "java"
+      },
+      "package": {
+        "name": "com.example.helloworld"
+      },
+      "dependencies": [
+        {
+          "import": "SpringApplication",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.boot"
+        },
+        {
+          "import": "SpringBootApplication",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.boot.autoconfigure"
+        }
+      ],
+      "classes": {
+        "HelloWorldApplication": {
+          "name": "HelloWorldApplication",
+          "modifiers": [
+            "public"
+          ],
+          "min_max_lineno": {
+            "min_lineno": 6,
+            "max_lineno": 11
+          },
+          "methods": {
+            "main": {
+              "name": "main",
+              "modifiers": [
+                "static",
+                "public"
+              ],
+              "parameters": [
+                {
+                  "name": "args",
+                  "type": "String[]"
+                }
+              ],
+              "min_max_lineno": {
+                "min_lineno": 9,
+                "max_lineno": 11
+              },
+              "calls": [
+                "SpringApplication.run"
+              ]
+            }
+          },
+          "annotations": [
+            {
+              "name": "SpringBootApplication",
+              "type": "annotation"
+            }
+          ]
+        }
+      },
+      "main_info": {
+        "main_flag": 1,
+        "main_class": "HelloWorldApplication",
+        "main_method": "main",
+        "type": "application",
+        "fully_qualified_name": "com.example.helloworld.HelloWorldApplication"
+      }
+    }
+  ],
+  "spring-boot-3-hello-world-output/spring-boot-3-hello-world/src/main/java/com/example/helloworld/controller": [
+    {
+      "file": {
+        "path": "/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4j-experiment/spring-boot-3-hello-world/src/main/java/com/example/helloworld/controller/HelloWorldController.java",
+        "fileNameBase": "HelloWorldController",
+        "extension": "java"
+      },
+      "package": {
+        "name": "com.example.helloworld.controller"
+      },
+      "dependencies": [
+        {
+          "import": "GetMapping",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.web.bind.annotation"
+        },
+        {
+          "import": "RestController",
+          "type": "external",
+          "type_element": "class",
+          "from_module": "org.springframework.web.bind.annotation"
+        }
+      ],
+      "classes": {
+        "HelloWorldController": {
+          "name": "HelloWorldController",
+          "modifiers": [
+            "public"
+          ],
+          "min_max_lineno": {
+            "min_lineno": 6,
+            "max_lineno": 12
+          },
+          "methods": {
+            "sendGreetings": {
+              "name": "sendGreetings",
+              "modifiers": [
+                "public"
+              ],
+              "return_type": "String",
+              "min_max_lineno": {
+                "min_lineno": 9,
+                "max_lineno": 12
+              },
+              "returns": [
+                "\"Hello, World!\""
+              ],
+              "annotations": [
+                {
+                  "name": "GetMapping",
+                  "type": "annotation",
+                  "value": "\"/hello\""
+                }
+              ]
+            }
+          },
+          "annotations": [
+            {
+              "name": "RestController",
+              "type": "annotation"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "directory_tree": {
+    "spring-boot-3-hello-world": {
+      "pom.xml": "maven project file",
+      "README.md": "text file",
+      ".gitignore": "git file",
+      "src": {
+        "test": {
+          "java": {
+            "com": {
+              "example": {
+                "helloworld": {
+                  "HelloWorldApplicationTests.java": "java source file",
+                  "controller": {
+                    "HelloWorldControllerTest.java": "java source file"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "main": {
+          "resources": {
+            "application.properties": "properties file"
+          },
+          "java": {
+            "com": {
+              "example": {
+                "helloworld": {
+                  "HelloWorldApplication.java": "java source file",
+                  "controller": {
+                    "HelloWorldController.java": "java source file"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "readme_files": {
+    "spring-boot-3-hello-world-output/spring-boot-3-hello-world/README.md": "# Spring Boot 3.x Hello World\n\n**A simple Spring Boot 3.x app to send hello world message to a user**\n\n> **Note:** **Spring Boot 3.x** requires **Java 17** as a minimum version. Make sure you are using Java 17 or beyond for Spring Boot 3.x projects.\n\n## How to Run Application\n\n**Start the application using any of the commands mentioned below**\n\n> **Note:** First two commands need to run inside the root folder of this project i.e. inside the **spring-boot-3-hello-world** folder\n\n\n- **Using maven** <br/>``` mvn spring-boot:run```\n\n\n- **From jar file**\n  Create a jar file using '**mvn clean install**' command and then execute\n  <br/>```java -jar target/spring-boot-3-hello-world-1.0.0-SNAPSHOT.jar```\n\n\n- **Directly from IDE**\n  <br/>```Right click on HelloWorldApplication.java and click on 'Run' option```\n  <br/><br/>\n\n> **Note:** By default spring boot application starts on port number 8080. If port 8080 is occupied in your system then you can change the port number by uncommenting and updating the **server.port** property inside the **application.properties** file that is available inside the **src > main > resources** folder.\n\n<br/>\n\n**Send an HTTP GET request to '/hello' endpoint using any of the two methods**\n\n- **Browser or REST client**\n  <br/>```http://localhost:8080/hello```\n\n\n- **cURL**\n  <br/>```curl --request GET 'http://localhost:8080/hello'```\n\n\n## How to Run Unit Test Cases\n\n**Run the test cases using any of the commands mentioned below**\n\n> **Note:** These commands need to run inside the root folder of this project i.e. inside the **spring-boot-3-hello-world** folder\n\n- **To run all the test cases**\n  <br/>```mvn test```\n\n\n- **To run a particular test class**\n  <br/>```mvn -Dtest=HelloWorldControllerTest test```\n  <br/>or\n  <br/>```mvn -Dtest=HelloWorldApplicationTests test```"
+  },
+  "metadata": {
+    "id": 570983058,
+    "node_id": "R_kgDOIgiCkg",
+    "name": "spring-boot-3-hello-world",
+    "full_name": "BuntyRaghani/spring-boot-3-hello-world",
+    "private": false,
+    "owner": {
+      "login": "BuntyRaghani",
+      "id": 83183208,
+      "node_id": "MDQ6VXNlcjgzMTgzMjA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/83183208?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/BuntyRaghani",
+      "html_url": "https://github.com/BuntyRaghani",
+      "followers_url": "https://api.github.com/users/BuntyRaghani/followers",
+      "following_url": "https://api.github.com/users/BuntyRaghani/following{/other_user}",
+      "gists_url": "https://api.github.com/users/BuntyRaghani/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/BuntyRaghani/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/BuntyRaghani/subscriptions",
+      "organizations_url": "https://api.github.com/users/BuntyRaghani/orgs",
+      "repos_url": "https://api.github.com/users/BuntyRaghani/repos",
+      "events_url": "https://api.github.com/users/BuntyRaghani/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/BuntyRaghani/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "html_url": "https://github.com/BuntyRaghani/spring-boot-3-hello-world",
+    "description": "A simple Spring Boot 3.x app to send hello world message to a user",
+    "fork": false,
+    "url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world",
+    "forks_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/forks",
+    "keys_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/keys{/key_id}",
+    "collaborators_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/collaborators{/collaborator}",
+    "teams_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/teams",
+    "hooks_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/hooks",
+    "issue_events_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/issues/events{/number}",
+    "events_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/events",
+    "assignees_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/assignees{/user}",
+    "branches_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/branches{/branch}",
+    "tags_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/tags",
+    "blobs_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/git/blobs{/sha}",
+    "git_tags_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/git/tags{/sha}",
+    "git_refs_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/git/refs{/sha}",
+    "trees_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/git/trees{/sha}",
+    "statuses_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/statuses/{sha}",
+    "languages_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/languages",
+    "stargazers_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/stargazers",
+    "contributors_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/contributors",
+    "subscribers_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/subscribers",
+    "subscription_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/subscription",
+    "commits_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/commits{/sha}",
+    "git_commits_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/git/commits{/sha}",
+    "comments_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/comments{/number}",
+    "issue_comment_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/issues/comments{/number}",
+    "contents_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/contents/{+path}",
+    "compare_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/compare/{base}...{head}",
+    "merges_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/merges",
+    "archive_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/{archive_format}{/ref}",
+    "downloads_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/downloads",
+    "issues_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/issues{/number}",
+    "pulls_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/pulls{/number}",
+    "milestones_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/milestones{/number}",
+    "notifications_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/notifications{?since,all,participating}",
+    "labels_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/labels{/name}",
+    "releases_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/releases{/id}",
+    "deployments_url": "https://api.github.com/repos/BuntyRaghani/spring-boot-3-hello-world/deployments",
+    "created_at": "2022-11-26T19:12:25Z",
+    "updated_at": "2025-12-15T09:14:49Z",
+    "pushed_at": "2025-12-15T09:14:45Z",
+    "git_url": "git://github.com/BuntyRaghani/spring-boot-3-hello-world.git",
+    "ssh_url": "git@github.com:BuntyRaghani/spring-boot-3-hello-world.git",
+    "clone_url": "https://github.com/BuntyRaghani/spring-boot-3-hello-world.git",
+    "svn_url": "https://github.com/BuntyRaghani/spring-boot-3-hello-world",
+    "homepage": "https://bootcamptoprod.com/spring-boot-hello-world-api-guide-for-beginners",
+    "size": 6,
+    "stargazers_count": 1,
+    "watchers_count": 1,
+    "language": "Java",
+    "has_issues": true,
+    "has_projects": true,
+    "has_downloads": true,
+    "has_wiki": true,
+    "has_pages": false,
+    "has_discussions": false,
+    "forks_count": 23,
+    "mirror_url": null,
+    "archived": false,
+    "disabled": false,
+    "open_issues_count": 0,
+    "license": null,
+    "allow_forking": true,
+    "is_template": false,
+    "web_commit_signoff_required": false,
+    "topics": [
+      "api-development",
+      "getting-started",
+      "hello-world",
+      "java",
+      "java-17",
+      "rest-api",
+      "spring",
+      "spring-boot",
+      "spring-boot-3"
+    ],
+    "visibility": "public",
+    "forks": 23,
+    "open_issues": 0,
+    "watchers": 1,
+    "default_branch": "main",
+    "temp_clone_token": null,
+    "network_count": 23,
+    "subscribers_count": 1
+  },
+  "requirements": {
+    "org.springframework.boot:spring-boot-starter-web": {
+      "version": "unknown",
+      "scope": "compile",
+      "build_tool": "maven"
+    },
+    "org.springframework.boot:spring-boot-starter-test": {
+      "version": "unknown",
+      "scope": "test",
+      "build_tool": "maven"
+    }
+  }
+}

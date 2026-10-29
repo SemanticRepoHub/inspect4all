@@ -1,0 +1,15 @@
+[project]
+name = "inspect4py-experiment"
+version = "0.1.0"
+description = "Experimentation with inspect4py"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "inspect4py=0.0.8",
+    "ipytree>=0.2.2",
+    "jupyter>=1.1.1",
+    "pip>=26.0",
+]
+
+[tool.uv.sources]
+#inspect4py = { path = "inspect4py", editable = true }

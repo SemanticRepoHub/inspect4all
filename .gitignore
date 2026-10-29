@@ -94,3 +94,17 @@ package-lock.json
 
 # Misc
 .history
+
+# External repositories used for MSc experiments
+/experiments/inspect4py-experiment/fastapi/
+/experiments/inspect4py-experiment/inspect4py/
+
+# Large generated experiment outputs
+/experiments/inspect4py-experiment/fastapi-output/
+
+# Local caches
+.ipynb_checkpoints/
+__pycache__/
+.DS_Store
+/experiments/language-detection/libenry.dylib
+/experiments/inspect4py-experiment/kk

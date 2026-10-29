@@ -1,0 +1,50 @@
+{
+  "query_repo_id": "auth0/java-jwt",
+  "ranked": [
+    {
+      "repo_id": "jpadilla/pyjwt",
+      "score": 0.89,
+      "reasoning": "PyJWT is a Python library specifically for JWT encoding, decoding, signing, and verification, which closely matches the core purpose of auth0/java-jwt. It is a cross-language counterpart with the same library software type and near-matching JWT feature set, while dependency overlap is absent only because the projects live in different language ecosystems.",
+      "provenance": "agent_scored_unvalidated"
+    },
+    {
+      "repo_id": "connect2id/nimbus-jose-jwt",
+      "score": 0.76,
+      "reasoning": "nimbus-jose-jwt is a Java library that overlaps strongly with auth0/java-jwt on JWT parsing, signing, and verification, and it matches both language and software type. Its score is moderated because it is a larger JOSE toolkit beyond JWT, but shared dependencies such as bcprov-jdk15on and junit provide additional structural evidence of similarity.",
+      "provenance": "agent_scored_unvalidated"
+    },
+    {
+      "repo_id": "mpdavis/python-jose",
+      "score": 0.7,
+      "reasoning": "python-jose is a Python library that includes JWT signing, verification, and decoding, so it overlaps materially with auth0/java-jwt on JWT functionality. However, it is a broader JOSE library spanning JWS, JWE, and JWK rather than a primarily JWT-focused package, and there is no direct dependency overlap across the Java/Python ecosystems.",
+      "provenance": "agent_scored_unvalidated"
+    },
+    {
+      "repo_id": "spring-projects/spring-security",
+      "score": 0.2,
+      "reasoning": "Spring Security is mainly a general Java security framework for authentication and authorization, not a dedicated JWT library like auth0/java-jwt. It has some JWT support, but the framework-versus-library mismatch and weak dependency overlap mean only limited functional similarity.",
+      "provenance": "agent_scored_unvalidated"
+    },
+    {
+      "repo_id": "psf/requests",
+      "score": 0.01,
+      "reasoning": "Requests is a Python HTTP client library whose purpose is sending web requests, not creating or verifying JWTs. The shared software type of library is incidental; there is effectively no JWT-related functional overlap and no shared dependencies.",
+      "provenance": "agent_scored_unvalidated"
+    }
+  ],
+  "ground_truth": {
+    "jpadilla/pyjwt": "HIGH",
+    "mpdavis/python-jose": "HIGH",
+    "connect2id/nimbus-jose-jwt": "HIGH",
+    "spring-projects/spring-security": "MEDIUM",
+    "psf/requests": "LOW"
+  },
+  "steps_used": 8,
+  "retries_used": {
+    "jpadilla/pyjwt": 2,
+    "psf/requests": 2,
+    "spring-projects/spring-security": 2,
+    "mpdavis/python-jose": 2,
+    "connect2id/nimbus-jose-jwt": 2
+  }
+}

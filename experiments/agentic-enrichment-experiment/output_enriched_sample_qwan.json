@@ -1,0 +1,515 @@
+[
+  {
+    "id": "com.auth0.jwt.algorithms.CryptoHelper.verifySignatureFor(String,PublicKey,String,String,byte[])",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\main\\java\\com\\auth0\\jwt\\algorithms\\CryptoHelper.java",
+    "package": "com.auth0.jwt.algorithms",
+    "class": "CryptoHelper",
+    "method": "verifySignatureFor(String,PublicKey,String,String,byte[])",
+    "modifiers": [],
+    "parameters": [
+      {
+        "name": "algorithm",
+        "type": "String"
+      },
+      {
+        "name": "publicKey",
+        "type": "PublicKey"
+      },
+      {
+        "name": "header",
+        "type": "String"
+      },
+      {
+        "name": "payload",
+        "type": "String"
+      },
+      {
+        "name": "signatureBytes",
+        "type": "byte[]"
+      }
+    ],
+    "return_type": "boolean",
+    "annotations": [],
+    "calls": [
+      "CryptoHelper.CryptoHelper.verifySignatureFor",
+      "String.getBytes",
+      "String.getBytes"
+    ],
+    "doc": {
+      "description": "Verify signature for JWT header and payload.",
+      "tags": {
+        "param": [
+          "algorithm      algorithm name.",
+          "publicKey      algorithm public key.",
+          "header         JWT header.",
+          "payload        JWT payload.",
+          "signatureBytes JWT signature."
+        ],
+        "return": "true if signature is valid.",
+        "throws": [
+          "NoSuchAlgorithmException if the algorithm is not supported.",
+          "InvalidKeyException      if the given key is inappropriate for initializing the specified algorithm."
+        ]
+      }
+    },
+    "class_deps": [
+      "javax.crypto",
+      "javax.crypto.spec",
+      "java.nio.charset",
+      "java.security"
+    ],
+    "provenance": {
+      "doc": "tool"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.TokenUtils.splitToken",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\main\\java\\com\\auth0\\jwt\\TokenUtils.java",
+    "package": "com.auth0.jwt",
+    "class": "TokenUtils",
+    "method": "splitToken",
+    "modifiers": [
+      "static"
+    ],
+    "parameters": [
+      {
+        "name": "token",
+        "type": "String"
+      }
+    ],
+    "return_type": "String[]",
+    "annotations": [],
+    "calls": [
+      "new com.auth0.jwt.exceptions.JWTDecodeException(String)",
+      "String.indexOf",
+      "TokenUtils.TokenUtils.wrongNumberOfParts(int)",
+      "String.indexOf",
+      "TokenUtils.TokenUtils.wrongNumberOfParts(int)",
+      "String.indexOf",
+      "TokenUtils.TokenUtils.wrongNumberOfParts(String)",
+      "String.substring",
+      "String.substring",
+      "String.substring"
+    ],
+    "doc": {
+      "description": "Splits the given token on the \".\" chars into a String array with 3 parts.",
+      "tags": {
+        "param": "token the string to split.",
+        "return": "the array representing the 3 parts of the token.",
+        "throws": "JWTDecodeException if the Token doesn't have 3 parts."
+      }
+    },
+    "class_deps": [
+      "com.auth0.jwt.exceptions"
+    ],
+    "provenance": {
+      "doc": "tool"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.JWT.decodeJwt",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\main\\java\\com\\auth0\\jwt\\JWT.java",
+    "package": "com.auth0.jwt",
+    "class": "JWT",
+    "method": "decodeJwt",
+    "modifiers": [
+      "public"
+    ],
+    "parameters": [
+      {
+        "name": "token",
+        "type": "String"
+      }
+    ],
+    "return_type": "DecodedJWT",
+    "annotations": [],
+    "calls": [
+      "new JWTDecoder"
+    ],
+    "doc": {
+      "description": "Decode a given Json Web Token.\n<p>\nNote that this method <b>doesn't verify the token's signature!</b>\nUse it only if you trust the token or if you have already verified it.",
+      "tags": {
+        "param": "token with jwt format as string.",
+        "return": "a decoded JWT.",
+        "throws": "JWTDecodeException if any part of the token contained an invalid jwt\n                           or JSON format of each of the jwt parts."
+      }
+    },
+    "class_deps": [
+      "com.auth0.jwt.algorithms",
+      "com.auth0.jwt.exceptions",
+      "com.auth0.jwt.impl",
+      "com.auth0.jwt.interfaces",
+      "com.auth0.jwt.interfaces"
+    ],
+    "provenance": {
+      "doc": "tool"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.exceptions.IncorrectClaimException.IncorrectClaimException",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\main\\java\\com\\auth0\\jwt\\exceptions\\IncorrectClaimException.java",
+    "package": "com.auth0.jwt.exceptions",
+    "class": "IncorrectClaimException",
+    "method": "IncorrectClaimException",
+    "modifiers": [
+      "public"
+    ],
+    "parameters": [
+      {
+        "name": "message",
+        "type": "String"
+      },
+      {
+        "name": "claimName",
+        "type": "String"
+      },
+      {
+        "name": "claim",
+        "type": "Claim"
+      }
+    ],
+    "return_type": null,
+    "annotations": [],
+    "calls": [
+      "super"
+    ],
+    "doc": {
+      "description": "Used internally to construct the IncorrectClaimException which is thrown when there is verification\nfailure for a Claim that exists.",
+      "tags": {
+        "param": [
+          "message The error message",
+          "claimName The Claim name for which verification failed",
+          "claim The Claim value for which verification failed"
+        ]
+      }
+    },
+    "class_deps": [
+      "com.auth0.jwt.interfaces"
+    ],
+    "provenance": {
+      "doc": "tool"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.algorithms.Algorithm.HMAC256",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\main\\java\\com\\auth0\\jwt\\algorithms\\Algorithm.java",
+    "package": "com.auth0.jwt.algorithms",
+    "class": "Algorithm",
+    "method": "HMAC256",
+    "modifiers": [
+      "static",
+      "public"
+    ],
+    "parameters": [
+      {
+        "name": "secret",
+        "type": "String"
+      }
+    ],
+    "return_type": "Algorithm",
+    "annotations": [],
+    "calls": [
+      "new HMACAlgorithm"
+    ],
+    "doc": {
+      "description": "Creates a new Algorithm instance using HmacSHA256. Tokens specify this as \"HS256\".",
+      "tags": {
+        "param": "secret the secret bytes to use in the verify or signing instance.\n              Ensure the length of the secret is at least 256 bit long",
+        "return": "a valid HMAC256 Algorithm.",
+        "throws": "IllegalArgumentException if the provided Secret is null."
+      }
+    },
+    "class_deps": [
+      "com.auth0.jwt.exceptions",
+      "com.auth0.jwt.exceptions",
+      "com.auth0.jwt.interfaces",
+      "com.auth0.jwt.interfaces",
+      "com.auth0.jwt.interfaces",
+      "java.security.interfaces"
+    ],
+    "provenance": {
+      "doc": "tool"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.JWTDecoderTest.shouldGetIssuedAt",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\test\\java\\com\\auth0\\jwt\\JWTDecoderTest.java",
+    "package": "com.auth0.jwt",
+    "class": "JWTDecoderTest",
+    "method": "shouldGetIssuedAt",
+    "modifiers": [
+      "public"
+    ],
+    "parameters": [],
+    "return_type": null,
+    "annotations": [
+      {
+        "name": "Test",
+        "type": "annotation"
+      }
+    ],
+    "calls": [
+      "JWT.decode(String)",
+      "assertThat",
+      "is",
+      "notNullValue",
+      "assertThat",
+      "DecodedJWT.getIssuedAt",
+      "is",
+      "equalTo(Date)",
+      "new java.util.Date",
+      "assertThat",
+      "DecodedJWT.getIssuedAtAsInstant",
+      "is",
+      "equalTo",
+      "Instant.ofEpochMilli"
+    ],
+    "doc": {
+      "description": "This test method verifies that the JWT decoder correctly extracts and validates the issued-at timestamp from a decoded token, ensuring the parsed timestamp matches the expected value for the given JWT payload. The test scenario confirms proper handling of the 'iat' claim during JWT decoding operations.",
+      "tags": {}
+    },
+    "class_deps": [
+      "com.auth0.jwt.exceptions",
+      "com.auth0.jwt.interfaces",
+      "com.auth0.jwt.interfaces",
+      "org.hamcrest.collection",
+      "org.hamcrest.core",
+      "org.junit",
+      "org.junit",
+      "org.junit.rules",
+      "java.io",
+      "java.nio.charset",
+      "java.time",
+      "java.util",
+      "java.util",
+      "java.util",
+      "java.util",
+      "org.hamcrest.MatcherAssert",
+      "org.hamcrest.Matchers"
+    ],
+    "provenance": {
+      "doc": "agent_backfill_unvalidated"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.JWTCreatorTest.shouldFailWithIllegalArgumentExceptionForInvalidJsonForPayloadClaims",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\test\\java\\com\\auth0\\jwt\\JWTCreatorTest.java",
+    "package": "com.auth0.jwt",
+    "class": "JWTCreatorTest",
+    "method": "shouldFailWithIllegalArgumentExceptionForInvalidJsonForPayloadClaims",
+    "modifiers": [
+      "public"
+    ],
+    "parameters": [],
+    "return_type": null,
+    "annotations": [
+      {
+        "name": "Test",
+        "type": "annotation"
+      }
+    ],
+    "calls": [
+      "ExpectedException.expect",
+      "ExpectedException.expectMessage(String)",
+      "JWTCreator.init",
+      "expr.withPayload",
+      "expr.sign",
+      "Algorithm.HMAC256(String)"
+    ],
+    "doc": {
+      "description": "This test verifies that the JWT creator throws an IllegalArgumentException when invalid JSON is provided for payload claims, ensuring proper validation of claim data format. The test scenario checks the error handling behavior when malformed JSON input is processed during JWT creation.",
+      "tags": {}
+    },
+    "class_deps": [
+      "com.auth0.jwt.algorithms",
+      "com.auth0.jwt.interfaces",
+      "com.auth0.jwt.interfaces",
+      "com.fasterxml.jackson.databind",
+      "com.fasterxml.jackson.databind.node",
+      "org.junit",
+      "org.junit",
+      "org.junit.rules",
+      "java.nio.charset",
+      "java.security.interfaces",
+      "java.security.interfaces",
+      "java.time",
+      "java.util",
+      "org.hamcrest.MatcherAssert",
+      "org.hamcrest.Matchers",
+      "org.junit.Assert",
+      "org.mockito.Mockito",
+      "org.mockito.Mockito"
+    ],
+    "provenance": {
+      "doc": "agent_enriched"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.impl.PayloadImpl.getClaim",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\main\\java\\com\\auth0\\jwt\\impl\\PayloadImpl.java",
+    "package": "com.auth0.jwt.impl",
+    "class": "PayloadImpl",
+    "method": "getClaim",
+    "modifiers": [
+      "public"
+    ],
+    "parameters": [
+      {
+        "name": "name",
+        "type": "String"
+      }
+    ],
+    "return_type": "Claim",
+    "annotations": [
+      {
+        "name": "Override",
+        "type": "annotation"
+      }
+    ],
+    "calls": [
+      "com.auth0.jwt.interfaces.Payload.extractClaim"
+    ],
+    "doc": {
+      "description": "Overrides the parent method to retrieve a specific claim from this payload instance by name, returning the corresponding Claim object or null if not found. The method operates on the internal claim storage of this payload instance and uses the provided name parameter to locate and return the matching claim.",
+      "tags": {}
+    },
+    "class_deps": [
+      "com.auth0.jwt.interfaces",
+      "com.auth0.jwt.interfaces",
+      "com.fasterxml.jackson.core",
+      "com.fasterxml.jackson.databind",
+      "java.io",
+      "java.time",
+      "java.util",
+      "java.util",
+      "java.util",
+      "java.util",
+      "java.util",
+      "com.auth0.jwt.impl.JsonNodeClaim"
+    ],
+    "provenance": {
+      "doc": "agent_enriched"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.impl.JsonNodeClaimTest.shouldGetNullArrayIfNonArrayValue",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\test\\java\\com\\auth0\\jwt\\impl\\JsonNodeClaimTest.java",
+    "package": "com.auth0.jwt.impl",
+    "class": "JsonNodeClaimTest",
+    "method": "shouldGetNullArrayIfNonArrayValue",
+    "modifiers": [
+      "public"
+    ],
+    "parameters": [],
+    "return_type": null,
+    "annotations": [
+      {
+        "name": "Test",
+        "type": "annotation"
+      }
+    ],
+    "calls": [
+      "ObjectMapper.valueToTree(int)",
+      "JsonNodeClaimTest.JsonNodeClaimTest.claimFromNode",
+      "assertThat",
+      "Claim.asArray",
+      "is",
+      "nullValue"
+    ],
+    "doc": {
+      "description": "This test verifies that when a non-array JSON value is accessed as an array, the method returns null instead of throwing an exception. The scenario tests the graceful handling of type mismatches in JSON node claims.",
+      "tags": {}
+    },
+    "class_deps": [
+      "com.auth0.jwt",
+      "com.auth0.jwt.exceptions",
+      "com.auth0.jwt.interfaces",
+      "com.fasterxml.jackson.core",
+      "com.fasterxml.jackson.core.type",
+      "com.fasterxml.jackson.databind",
+      "com.fasterxml.jackson.databind",
+      "com.fasterxml.jackson.databind.node",
+      "com.fasterxml.jackson.databind.node",
+      "com.fasterxml.jackson.databind.node",
+      "com.fasterxml.jackson.databind.node",
+      "org.hamcrest.collection",
+      "org.junit",
+      "org.junit",
+      "org.junit",
+      "org.junit.rules",
+      "org.mockito",
+      "java.io",
+      "java.time",
+      "java.util",
+      "java.util",
+      "java.util",
+      "java.util",
+      "java.util",
+      "java.util",
+      "com.auth0.jwt.impl.JWTParser",
+      "org.hamcrest.MatcherAssert",
+      "org.hamcrest.Matchers",
+      "org.hamcrest.Matchers",
+      "org.hamcrest.Matchers",
+      "org.hamcrest.Matchers",
+      "org.hamcrest.Matchers",
+      "org.hamcrest.Matchers",
+      "org.hamcrest.core.IsNull",
+      "org.hamcrest.core.IsNull",
+      "org.junit.Assert",
+      "org.mockito.Mockito",
+      "org.mockito.Mockito",
+      "org.mockito.Mockito"
+    ],
+    "provenance": {
+      "doc": "agent_enriched"
+    }
+  },
+  {
+    "id": "com.auth0.jwt.impl.JsonNodeClaim.asDouble",
+    "file": "D:\\FinalProject\\inspect4j\\Test\\test_repos\\java-jwt-master\\java-jwt-master\\lib\\src\\main\\java\\com\\auth0\\jwt\\impl\\JsonNodeClaim.java",
+    "package": "com.auth0.jwt.impl",
+    "class": "JsonNodeClaim",
+    "method": "asDouble",
+    "modifiers": [
+      "public"
+    ],
+    "parameters": [],
+    "return_type": "Double",
+    "annotations": [
+      {
+        "name": "Override",
+        "type": "annotation"
+      }
+    ],
+    "calls": [
+      "JsonNodeClaim.JsonNodeClaim.isMissing",
+      "JsonNodeClaim.JsonNodeClaim.isNull",
+      "JsonNode.isNumber",
+      "JsonNode.asDouble"
+    ],
+    "doc": {
+      "description": "Overrides the asDouble method to convert the JSON node's value to a Double instance, returning null if the node contains no value or cannot be converted to a double type.",
+      "tags": {}
+    },
+    "class_deps": [
+      "com.auth0.jwt.exceptions",
+      "com.auth0.jwt.interfaces",
+      "com.fasterxml.jackson.core",
+      "com.fasterxml.jackson.core",
+      "com.fasterxml.jackson.core",
+      "com.fasterxml.jackson.core.type",
+      "com.fasterxml.jackson.databind",
+      "java.io",
+      "java.lang.reflect",
+      "java.time",
+      "java.util",
+      "java.util",
+      "java.util",
+      "java.util"
+    ],
+    "provenance": {
+      "doc": "agent_enriched"
+    }
+  }
+]

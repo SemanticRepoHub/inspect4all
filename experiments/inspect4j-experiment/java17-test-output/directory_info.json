@@ -1,0 +1,9 @@
+{
+  "directory_tree": {
+    "java17-test": {
+      "src": {
+        "Point.java": "java source file"
+      }
+    }
+  }
+}

@@ -1,0 +1,369 @@
+{
+  "query": {
+    "repo_id": "auth0/java-jwt",
+    "metadata": {
+      "name": "java-jwt",
+      "full_name": "auth0/java-jwt",
+      "description": "Java implementation of JSON Web Tokens (JWT) following RFC 7519.",
+      "language": "Java"
+    },
+    "languages": {"Java": 52},
+    "software_type": "library",
+    "dependencies": [
+      {"name": "jackson-databind",  "version": "2.14.0", "scope": "compile", "build_tool": "maven", "language": "Java"},
+      {"name": "commons-codec",     "version": "1.15",   "scope": "compile", "build_tool": "maven", "language": "Java"},
+      {"name": "junit",             "version": "4.13.2", "scope": "test",    "build_tool": "maven", "language": "Java"},
+      {"name": "bcprov-jdk15on",    "version": "1.70",   "scope": "compile", "build_tool": "maven", "language": "Java"}
+    ],
+    "readme": {
+      "text": "# java-jwt\n\nJava implementation of JSON Web Tokens (JWT) following the RFC 7519 standard.\n\n## Installation\n\nAdd to your Maven `pom.xml`:\n```xml\n<dependency>\n    <groupId>com.auth0</groupId>\n    <artifactId>java-jwt</artifactId>\n    <version>4.4.0</version>\n</dependency>\n```\n\n## Usage\n\n### Create and Sign a Token\n```java\nAlgorithm algorithm = Algorithm.HMAC256(\"secret\");\nString token = JWT.create()\n    .withIssuer(\"auth0\")\n    .withClaim(\"user\", \"alice\")\n    .withExpiresAt(expiry)\n    .sign(algorithm);\n```\n\n### Verify a Token\n```java\nJWTVerifier verifier = JWT.require(algorithm).withIssuer(\"auth0\").build();\nDecodedJWT jwt = verifier.verify(token);\n```",
+      "source_files": ["README.md"]
+    },
+    "doc_records": [
+      {
+        "id": "com.auth0.jwt.JWT.sign",
+        "qualified_name": "com.auth0.jwt.JWT.sign",
+        "language": "Java",
+        "type": "method",
+        "container": "JWT",
+        "original_doc": "Creates and signs a JWT using the given algorithm.\n@param algorithm The signing algorithm (e.g. HMAC256, RSA256)\n@return The signed token as a compact serialized string\n@throws SignatureGenerationException if signing fails",
+        "enriched_doc": null
+      },
+      {
+        "id": "com.auth0.jwt.JWTVerifier.verify",
+        "qualified_name": "com.auth0.jwt.JWTVerifier.verify",
+        "language": "Java",
+        "type": "method",
+        "container": "JWTVerifier",
+        "original_doc": "Verifies the signature and validates the claims of the given JWT.\n@param token The compact serialized JWT string\n@return The decoded JWT with verified claims\n@throws JWTVerificationException if signature or claims validation fails",
+        "enriched_doc": null
+      },
+      {
+        "id": "com.auth0.jwt.JWT.decode",
+        "qualified_name": "com.auth0.jwt.JWT.decode",
+        "language": "Java",
+        "type": "method",
+        "container": "JWT",
+        "original_doc": "Decodes a JWT without verifying its signature.\n@param token The compact serialized JWT string\n@return The decoded JWT\n@throws JWTDecodeException if the token is malformed",
+        "enriched_doc": null
+      },
+      {
+        "id": "com.auth0.jwt.JWTCreator.Builder.withClaim",
+        "qualified_name": "com.auth0.jwt.JWTCreator.Builder.withClaim",
+        "language": "Java",
+        "type": "method",
+        "container": "JWTCreator.Builder",
+        "original_doc": "Adds a custom claim to the JWT payload.\n@param name The claim name\n@param value The claim value\n@return This builder instance for chaining",
+        "enriched_doc": null
+      },
+      {
+        "id": "com.auth0.jwt.JWTCreator.Builder.withExpiresAt",
+        "qualified_name": "com.auth0.jwt.JWTCreator.Builder.withExpiresAt",
+        "language": "Java",
+        "type": "method",
+        "container": "JWTCreator.Builder",
+        "original_doc": "Sets the expiration time (exp) claim.\n@param expiresAt The expiration date\n@return This builder instance for chaining",
+        "enriched_doc": null
+      }
+    ]
+  },
+  "candidates": [
+    {
+      "repo_id": "jpadilla/pyjwt",
+      "metadata": {
+        "name": "PyJWT",
+        "full_name": "jpadilla/pyjwt",
+        "description": "JSON Web Token implementation in Python.",
+        "language": "Python"
+      },
+      "languages": {"Python": 18},
+      "software_type": "library",
+      "dependencies": [
+        {"name": "cryptography", "version": "41.0.0", "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "pytest",       "version": "7.4.0",  "scope": "dev",     "build_tool": "pip", "language": "Python"}
+      ],
+      "readme": {
+        "text": "# PyJWT\n\nA Python library which allows you to encode and decode JSON Web Tokens (JWT). JWT is an open, industry-standard RFC 7519 method for representing claims securely between two parties.\n\n## Usage\n\n```python\nimport jwt\n\nencoded = jwt.encode({'user': 'alice', 'exp': expiry}, 'secret', algorithm='HS256')\ndecoded = jwt.decode(encoded, 'secret', algorithms=['HS256'])\n```",
+        "source_files": ["README.md"]
+      },
+      "doc_records": [
+        {
+          "id": "jwt.api_jwt.PyJWT.encode",
+          "qualified_name": "jwt.api_jwt.PyJWT.encode",
+          "language": "Python",
+          "type": "method",
+          "container": "PyJWT",
+          "original_doc": "Encode a payload as a signed JWT string.\n\nArgs:\n    payload (dict): Claims to include in the token.\n    key (str | bytes): Secret or private key for signing.\n    algorithm (str): Signing algorithm, defaults to HS256.\n\nReturns:\n    str: The encoded JWT string.",
+          "enriched_doc": null
+        },
+        {
+          "id": "jwt.api_jwt.PyJWT.decode",
+          "qualified_name": "jwt.api_jwt.PyJWT.decode",
+          "language": "Python",
+          "type": "method",
+          "container": "PyJWT",
+          "original_doc": "Decode and verify a JWT string, returning the claims payload.\n\nArgs:\n    jwt (str): The encoded JWT string.\n    key (str | bytes): Secret or public key for verification.\n    algorithms (list[str]): Accepted signing algorithms.\n\nReturns:\n    dict: The decoded claims payload.\n\nRaises:\n    DecodeError: If the token is invalid.\n    ExpiredSignatureError: If the token has expired.",
+          "enriched_doc": null
+        },
+        {
+          "id": "jwt.api_jwt.PyJWT.get_unverified_header",
+          "qualified_name": "jwt.api_jwt.PyJWT.get_unverified_header",
+          "language": "Python",
+          "type": "method",
+          "container": "PyJWT",
+          "original_doc": "Return the decoded header without verifying the signature.\n\nArgs:\n    jwt (str): The encoded JWT string.\n\nReturns:\n    dict: The JWT header fields.",
+          "enriched_doc": null
+        }
+      ]
+    },
+    {
+      "repo_id": "mpdavis/python-jose",
+      "metadata": {
+        "name": "python-jose",
+        "full_name": "mpdavis/python-jose",
+        "description": "A JOSE implementation in Python covering JWT, JWS, JWE, and JWK.",
+        "language": "Python"
+      },
+      "languages": {"Python": 24},
+      "software_type": "library",
+      "dependencies": [
+        {"name": "cryptography", "version": "41.0.0", "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "ecdsa",        "version": "0.19.0", "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "rsa",          "version": "4.9",    "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "pytest",       "version": "7.4.0",  "scope": "dev",     "build_tool": "pip", "language": "Python"}
+      ],
+      "readme": {
+        "text": "# python-jose\n\nA JOSE implementation in Python. Supports JWT, JWS, JWE, and JWK specifications with multiple cryptographic backends (cryptography, ecdsa, rsa).\n\n## Usage\n\n```python\nfrom jose import jwt\n\ntoken = jwt.encode({'sub': 'alice'}, 'secret', algorithm='HS256')\nclaims = jwt.decode(token, 'secret', algorithms=['HS256'])\n```",
+        "source_files": ["README.md", "README.rst"]
+      },
+      "doc_records": [
+        {
+          "id": "jose.jwt.encode",
+          "qualified_name": "jose.jwt.encode",
+          "language": "Python",
+          "type": "function",
+          "container": null,
+          "original_doc": "Encode claims as a signed JWT token.\n\nArgs:\n    claims (dict): Claims dict to encode.\n    key (str): The key to use for signing.\n    algorithm (str): The algorithm to sign the token with.\n\nReturns:\n    str: The signed JWT string.",
+          "enriched_doc": null
+        },
+        {
+          "id": "jose.jwt.decode",
+          "qualified_name": "jose.jwt.decode",
+          "language": "Python",
+          "type": "function",
+          "container": null,
+          "original_doc": "Verify and decode a JWT token.\n\nArgs:\n    token (str): The JWT token to decode.\n    key (str): The key to use for verification.\n    algorithms (list): The algorithms allowed.\n\nReturns:\n    dict: The decoded claims.\n\nRaises:\n    JWTError: If the signature is invalid or claims fail.",
+          "enriched_doc": null
+        },
+        {
+          "id": "jose.jwt.get_unverified_claims",
+          "qualified_name": "jose.jwt.get_unverified_claims",
+          "language": "Python",
+          "type": "function",
+          "container": null,
+          "original_doc": "Returns the decoded claims of a JWT without verification.\n\nArgs:\n    token (str): The JWT string.\n\nReturns:\n    dict: The decoded claims payload.",
+          "enriched_doc": null
+        },
+        {
+          "id": "jose.jwt.get_unverified_header",
+          "qualified_name": "jose.jwt.get_unverified_header",
+          "language": "Python",
+          "type": "function",
+          "container": null,
+          "original_doc": "Returns the decoded header of a JWT without verification.\n\nArgs:\n    token (str): The JWT string.\n\nReturns:\n    dict: The decoded header.",
+          "enriched_doc": null
+        }
+      ]
+    },
+    {
+      "repo_id": "connect2id/nimbus-jose-jwt",
+      "metadata": {
+        "name": "nimbus-jose-jwt",
+        "full_name": "connect2id/nimbus-jose-jwt",
+        "description": "Comprehensive Java library for JWT, JWS, JWE, JWK, and JWA. Used in enterprise OAuth2/OIDC stacks.",
+        "language": "Java"
+      },
+      "languages": {"Java": 185},
+      "software_type": "library",
+      "dependencies": [
+        {"name": "bcprov-jdk15on", "version": "1.70",  "scope": "compile", "build_tool": "maven", "language": "Java"},
+        {"name": "json-smart",     "version": "2.5.0", "scope": "compile", "build_tool": "maven", "language": "Java"},
+        {"name": "junit",          "version": "4.13.2","scope": "test",    "build_tool": "maven", "language": "Java"},
+        {"name": "mockito-core",   "version": "5.3.1", "scope": "test",    "build_tool": "maven", "language": "Java"}
+      ],
+      "readme": {
+        "text": "# Nimbus JOSE + JWT\n\nJava library for JSON Object Signing and Encryption (JOSE) and JSON Web Tokens (JWT). Supports the complete JOSE family: JWS, JWE, JWK, JWA, and JWT.\n\n## Features\n\n- JSON Web Signatures (JWS)\n- JSON Web Encryption (JWE)\n- JSON Web Keys (JWK) and key sets\n- JSON Web Algorithms (JWA)\n- JSON Web Tokens (JWT) including signed and encrypted\n- Extensive algorithm support: RSA, EC, HMAC, AES\n\n## Usage\n\n```java\nJWSObject jwsObject = new JWSObject(new JWSHeader(JWSAlgorithm.RS256), payload);\njwsObject.sign(new RSASSASigner(privateKey));\nString compact = jwsObject.serialize();\n```",
+        "source_files": ["README.md"]
+      },
+      "doc_records": [
+        {
+          "id": "com.nimbusds.jose.JWSObject.sign",
+          "qualified_name": "com.nimbusds.jose.JWSObject.sign",
+          "language": "Java",
+          "type": "method",
+          "container": "JWSObject",
+          "original_doc": "Signs this JWS object with the specified signer.\n@param signer The JWS signer (e.g. RSASSASigner, MACSigner)\n@throws JOSEException If the JWS object couldn't be signed",
+          "enriched_doc": null
+        },
+        {
+          "id": "com.nimbusds.jose.JWSObject.verify",
+          "qualified_name": "com.nimbusds.jose.JWSObject.verify",
+          "language": "Java",
+          "type": "method",
+          "container": "JWSObject",
+          "original_doc": "Verifies the signature of this JWS object.\n@param verifier The JWS verifier (e.g. RSASSAVerifier, MACVerifier)\n@return true if verified, false if signature check failed\n@throws JOSEException If verification could not be performed",
+          "enriched_doc": null
+        },
+        {
+          "id": "com.nimbusds.jose.JWEObject.encrypt",
+          "qualified_name": "com.nimbusds.jose.JWEObject.encrypt",
+          "language": "Java",
+          "type": "method",
+          "container": "JWEObject",
+          "original_doc": "Encrypts this JWE object with the specified encrypter.\n@param encrypter The JWE encrypter\n@throws JOSEException If the JWE object couldn't be encrypted",
+          "enriched_doc": null
+        },
+        {
+          "id": "com.nimbusds.jose.JWTParser.parse",
+          "qualified_name": "com.nimbusds.jose.JWTParser.parse",
+          "language": "Java",
+          "type": "method",
+          "container": "JWTParser",
+          "original_doc": "Parses a JWT from its compact serialized form. The JWT type is determined by the header.\n@param s The compact serialized JWT string\n@return The parsed JWT (PlainJWT, SignedJWT, or EncryptedJWT)\n@throws ParseException If the JWT could not be parsed",
+          "enriched_doc": null
+        }
+      ]
+    },
+    {
+      "repo_id": "spring-projects/spring-security",
+      "metadata": {
+        "name": "spring-security",
+        "full_name": "spring-projects/spring-security",
+        "description": "Spring Security is a powerful and highly customisable authentication and access-control framework for Spring applications.",
+        "language": "Java"
+      },
+      "languages": {"Java": 820, "Kotlin": 12},
+      "software_type": "framework",
+      "dependencies": [
+        {"name": "spring-core",      "version": "6.1.0", "scope": "compile", "build_tool": "maven", "language": "Java"},
+        {"name": "spring-context",   "version": "6.1.0", "scope": "compile", "build_tool": "maven", "language": "Java"},
+        {"name": "spring-web",       "version": "6.1.0", "scope": "compile", "build_tool": "maven", "language": "Java"},
+        {"name": "nimbus-jose-jwt",  "version": "9.37",  "scope": "compile", "build_tool": "maven", "language": "Java"},
+        {"name": "junit",            "version": "4.13.2","scope": "test",    "build_tool": "maven", "language": "Java"},
+        {"name": "mockito-core",     "version": "5.3.1", "scope": "test",    "build_tool": "maven", "language": "Java"}
+      ],
+      "readme": {
+        "text": "# Spring Security\n\nSpring Security is a powerful and highly customisable authentication and access-control framework. It is the de-facto standard for securing Spring-based applications.\n\n## Features\n\n- Comprehensive and extensible authentication and authorisation\n- Protection against attacks like session fixation, clickjacking, cross-site request forgery\n- OAuth2 and OpenID Connect support\n- JWT token-based authentication via the OAuth2 Resource Server module\n- SAML2 and LDAP support",
+        "source_files": ["README.adoc"]
+      },
+      "doc_records": [
+        {
+          "id": "org.springframework.security.authentication.AuthenticationManager.authenticate",
+          "qualified_name": "org.springframework.security.authentication.AuthenticationManager.authenticate",
+          "language": "Java",
+          "type": "method",
+          "container": "AuthenticationManager",
+          "original_doc": "Attempts to authenticate the passed Authentication object.\n@param authentication The authentication request object\n@return A fully authenticated object including credentials\n@throws AuthenticationException If authentication fails",
+          "enriched_doc": null
+        },
+        {
+          "id": "org.springframework.security.web.SecurityFilterChain.matches",
+          "qualified_name": "org.springframework.security.web.SecurityFilterChain.matches",
+          "language": "Java",
+          "type": "method",
+          "container": "SecurityFilterChain",
+          "original_doc": "Returns whether this filter chain is configured to handle the supplied request.\n@param request The request to check\n@return true if this chain is configured to handle the request",
+          "enriched_doc": null
+        },
+        {
+          "id": "org.springframework.security.oauth2.jwt.JwtEncoder.encode",
+          "qualified_name": "org.springframework.security.oauth2.jwt.JwtEncoder.encode",
+          "language": "Java",
+          "type": "method",
+          "container": "JwtEncoder",
+          "original_doc": "Encode the JWT claims set and sign the JWT.\n@param parameters The JWT encoding parameters\n@return The signed JWT",
+          "enriched_doc": null
+        },
+        {
+          "id": "org.springframework.security.config.annotation.web.builders.HttpSecurity.authorizeHttpRequests",
+          "qualified_name": "org.springframework.security.config.annotation.web.builders.HttpSecurity.authorizeHttpRequests",
+          "language": "Java",
+          "type": "method",
+          "container": "HttpSecurity",
+          "original_doc": "Allows restricting access based upon the HttpServletRequest using RequestMatcher implementations.\n@param authorizeHttpRequestsCustomizer Customizer for authorization rules\n@return The HttpSecurity for further configuration",
+          "enriched_doc": null
+        }
+      ]
+    },
+    {
+      "repo_id": "psf/requests",
+      "metadata": {
+        "name": "requests",
+        "full_name": "psf/requests",
+        "description": "A simple, yet elegant, HTTP library for Python.",
+        "language": "Python"
+      },
+      "languages": {"Python": 32},
+      "software_type": "library",
+      "dependencies": [
+        {"name": "urllib3",             "version": "2.1.0", "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "charset-normalizer",  "version": "3.3.0", "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "certifi",             "version": "2023.7.22", "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "idna",                "version": "3.4",   "scope": "runtime", "build_tool": "pip", "language": "Python"},
+        {"name": "pytest",              "version": "7.4.0", "scope": "dev",     "build_tool": "pip", "language": "Python"}
+      ],
+      "readme": {
+        "text": "# Requests\n\nRequests is a simple, yet elegant, HTTP library.\n\n```python\nimport requests\nr = requests.get('https://api.example.com/data', auth=('user', 'pass'))\nprint(r.json())\n```\n\nRequests allows you to send HTTP/1.1 requests extremely easily. There's no need to manually add query strings to your URLs, or to form-encode your POST data.\n\n## Features\n\n- Keep-Alive & Connection Pooling\n- International Domains and URLs\n- Sessions with Cookie Persistence\n- Browser-style TLS/SSL Verification\n- Basic & Digest Authentication",
+        "source_files": ["README.md"]
+      },
+      "doc_records": [
+        {
+          "id": "requests.api.get",
+          "qualified_name": "requests.api.get",
+          "language": "Python",
+          "type": "function",
+          "container": null,
+          "original_doc": "Sends a GET request.\n\nArgs:\n    url (str): URL for the new Request object.\n    params (dict | list | bytes): Dictionary, list of tuples or bytes to send in the query string.\n    **kwargs: Optional arguments that request takes.\n\nReturns:\n    requests.Response",
+          "enriched_doc": null
+        },
+        {
+          "id": "requests.api.post",
+          "qualified_name": "requests.api.post",
+          "language": "Python",
+          "type": "function",
+          "container": null,
+          "original_doc": "Sends a POST request.\n\nArgs:\n    url (str): URL for the new Request object.\n    data (dict | list | tuple | bytes): Dictionary, list of tuples, bytes to send in the body.\n    json: JSON data to send in the body.\n    **kwargs: Optional arguments that request takes.\n\nReturns:\n    requests.Response",
+          "enriched_doc": null
+        },
+        {
+          "id": "requests.sessions.Session.request",
+          "qualified_name": "requests.sessions.Session.request",
+          "language": "Python",
+          "type": "method",
+          "container": "Session",
+          "original_doc": "Constructs a Request, prepares it and sends it. Returns a Response object.\n\nArgs:\n    method (str): HTTP method to use.\n    url (str): URL to send the request to.\n    params: Query parameters.\n    data: Request body data.\n    headers (dict): HTTP headers to send.\n\nReturns:\n    requests.Response",
+          "enriched_doc": null
+        },
+        {
+          "id": "requests.sessions.Session.prepare_request",
+          "qualified_name": "requests.sessions.Session.prepare_request",
+          "language": "Python",
+          "type": "method",
+          "container": "Session",
+          "original_doc": "Constructs a PreparedRequest for transmission and returns it. The PreparedRequest has settings merged from the Session-level values.",
+          "enriched_doc": null
+        }
+      ]
+    }
+  ],
+  "ground_truth": {
+    "description": "Manually curated similarity labels for java-jwt query (HIGH/MEDIUM/LOW)",
+    "labels": {
+      "jpadilla/pyjwt":                   "HIGH",
+      "mpdavis/python-jose":              "HIGH",
+      "connect2id/nimbus-jose-jwt":       "HIGH",
+      "spring-projects/spring-security":  "MEDIUM",
+      "psf/requests":                     "LOW"
+    }
+  }
+}

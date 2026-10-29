@@ -1,0 +1,48 @@
+{
+  "spring-boot-3-hello-world-output/spring-boot-3-hello-world/src/test/java/com/example/helloworld": {
+    "/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4j-experiment/spring-boot-3-hello-world/src/test/java/com/example/helloworld/HelloWorldApplicationTests.java": {
+      "classes": {
+        "HelloWorldApplicationTests": {
+          "contextLoads": {
+            "local": [
+              "assertNotNull"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "spring-boot-3-hello-world-output/spring-boot-3-hello-world/src/test/java/com/example/helloworld/controller": {
+    "/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4j-experiment/spring-boot-3-hello-world/src/test/java/com/example/helloworld/controller/HelloWorldControllerTest.java": {
+      "classes": {
+        "HelloWorldControllerTest": {
+          "shouldReturnExpectedMessage": {
+            "local": [
+              "MockMvc.perform",
+              "expr.andExpect",
+              "status",
+              "expr.isOk",
+              "expr.andExpect",
+              "content",
+              "expr.string",
+              "get(String)"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "spring-boot-3-hello-world-output/spring-boot-3-hello-world/src/main/java/com/example/helloworld": {
+    "/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4j-experiment/spring-boot-3-hello-world/src/main/java/com/example/helloworld/HelloWorldApplication.java": {
+      "classes": {
+        "HelloWorldApplication": {
+          "main": {
+            "local": [
+              "SpringApplication.run"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

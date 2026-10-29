@@ -1,0 +1,1 @@
+{"python-hello-world-output/python-hello-world": {"/Users/boonheng/Documents/msc_studies/dissertation/experiments/inspect4py/python-hello-world/hello_world.py": {"functions": {"main": {"local": ["print"]}}, "body": {"local": ["hello_world.main"]}}}}
