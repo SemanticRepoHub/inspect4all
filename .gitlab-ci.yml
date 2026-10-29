@@ -1,0 +1,168 @@
+stages:
+  - quality
+  - test
+  - build
+  - publish
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "*.md"
+        - "**/*.md"
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "*.md"
+        - "**/*.md"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+# ---------------------------------------------------------------------------
+# Base template: shared by all Python / uv jobs
+# ---------------------------------------------------------------------------
+.uv-base:
+  image: python:3.12-slim
+  tags:
+    - dev
+  before_script:
+    - apt-get update && apt-get install -y git
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    - pip install --quiet "uv>=0.7,<0.8"
+    - uv sync --dev --frozen
+  cache:
+    - key:
+        files:
+          - uv.lock
+      paths:
+        - .venv/
+        - .cache/uv/
+    - key: pip-uv
+      paths:
+        - .cache/pip/
+  variables:
+    UV_CACHE_DIR: .cache/uv
+    PIP_CACHE_DIR: .cache/pip
+
+# ===== quality stage =====
+
+lint:
+  extends: .uv-base
+  stage: quality
+  script:
+    - uv run ruff check .
+
+format:
+  extends: .uv-base
+  stage: quality
+  script:
+    - uv run ruff format . --check
+
+type-check:
+  extends: .uv-base
+  stage: quality
+  allow_failure: true
+  script:
+    - uv run mypy src
+
+# ===== test stage =====
+
+test:
+  extends: .uv-base
+  stage: test
+  script:
+    - >
+      uv run pytest
+      --cov=src
+      --cov-report=term-missing
+      --cov-report=html:htmlcov
+      --cov-report=xml:coverage.xml
+  coverage: '/(?i)total.*?(\d+(?:\.\d+)?)\%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+    paths:
+      - htmlcov/
+    expire_in: 7 days
+
+# ===== build stage =====
+
+build-package:
+  extends: .uv-base
+  stage: build
+  script:
+    - uv build
+    - uv publish
+      --publish-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
+      --username gitlab-ci-token
+      --password "$CI_JOB_TOKEN"
+      dist/*
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 7 days
+
+build-docker:
+  stage: build
+  image: docker:27
+  tags:
+    - docker
+  needs:
+    - build-package
+  before_script:
+    # Register QEMU for ARM64 support on x86 host
+    - docker run --rm --privileged tonistiigi/binfmt --install all
+    # Create multi-arch build
+    - docker buildx create --use --name multiarch-builder
+    - docker buildx inspect --bootstrap
+    # Login to registry
+    - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - apk add --no-cache git
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+  script:
+    - |
+      RAW_PKG_VERSION=$(ls dist/*.whl | head -1 | sed 's/.*-\([^-]*\)-py3.*/\1/')
+      DOCKER_PKG_VERSION=$(echo "$RAW_PKG_VERSION" | tr '+' '_')
+
+      if [ -n "$CI_COMMIT_TAG" ]; then
+        IMAGE_TAG="$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
+      else
+        IMAGE_TAG="$CI_REGISTRY_IMAGE:$DOCKER_PKG_VERSION"
+      fi
+      echo "To push docker tag: $DOCKER_PKG_VERSION"
+
+      docker buildx build \
+      --platform linux/amd64,linux/arm64 \
+      --target production \
+      --build-arg SETUPTOOLS_SCM_PRETEND_VERSION=$RAW_PKG_VERSION \
+      --tag "$IMAGE_TAG" \
+      --tag "$CI_REGISTRY_IMAGE:latest" \
+      --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:buildcache \
+      --cache-to type=registry,ref=$CI_REGISTRY_IMAGE:buildcache,mode=max \
+      --label "org.opencontainers.image.title=$CI_PROJECT_TITLE" \
+      --label "org.opencontainers.image.url=$CI_PROJECT_URL" \
+      --label "org.opencontainers.image.revision=$CI_COMMIT_SHA" \
+      --label "org.opencontainers.image.version=$DOCKER_PKG_VERSION" \
+      --provenance=false \
+      --sbom=false \
+      --push .
+
+# ===== publish stage =====
+
+publish-pypi:
+  extends: .uv-base
+  stage: publish
+  tags:
+    - prod
+  needs:
+    - build-package
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+      allow_failure: false
+  script:
+    - uv publish --publish-url https://upload.pypi.org/legacy/ --token "$PYPI_TOKEN" dist/*

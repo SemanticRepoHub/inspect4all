@@ -1,0 +1,107 @@
+[project]
+name = "inspect4all"
+dynamic = ["version"]
+description = "Language agnostic tool for inspecting and understanding software repositories"
+authors = [
+    { name = "Boon Heng Chew", email = "s2831745@sms.ed.ac.uk" }
+]
+readme = "README.md"
+keywords = ["software understanding", "static analysis", "embedding", "machine learning", "deep learning"]
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.3.1",
+    "pydantic-settings>=2.12.0",
+    "rich>=14.3.2",
+]
+
+[project.scripts]
+inspect4all = "inspect4all.cli:main"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.15.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 80
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "PTH", # flake8-use-pathlib
+    "RUF", # Ruff-specific rules
+]
+ignore = [
+    "E501",  # line too long (make this less strict and rely on formatter)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+    "ARG002", # Unused method argument
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["PLR2004", "S101", "TID252"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["inspect4all"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+follow_untyped_imports = true
+# Relaxed settings for team collaboration - warnings only, not strict
+check_untyped_defs = true
+warn_return_any = false
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_no_return = true
+# Disabled strict type enforcement
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_decorators = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]

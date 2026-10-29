@@ -1,0 +1,34 @@
+services:
+  # Run tests in container
+  test:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - uv-cache:/root/.cache/uv
+    environment:
+      - PYTHONPATH=/app/src
+    command: >
+      sh -c "uv sync --dev &&
+             uv run pytest"
+    profiles:
+      - test
+
+  # Run linting/checks in container
+  lint:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - uv-cache:/root/.cache/uv
+    command: >
+      sh -c "uv sync --dev &&
+             uv run ruff check . &&
+             uv run ruff format --check ."
+    profiles:
+      - lint
+
+volumes:
+  uv-cache:
