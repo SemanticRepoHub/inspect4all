@@ -1,6 +1,6 @@
 # inspect4all
 
-[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://python.org) [![BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE) [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23895264.svg)](https://doi.org/10.5281/zenodo.23895264)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://python.org) [![BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE) ![Work in progress](https://www.repostatus.org/badges/latest/wip.svg)
 
 **Inspect Python and Java code repositories, export structured metadata, and optionally enrich missing documentation using an LLM.** The core inspection is entirely usable **without an OpenAI API key**. LLM enrichment is opt-in and needs an accessible model endpoint (for OpenAI, an API key and API credits).
 
@@ -13,47 +13,18 @@
 - Optionally generate missing function/method descriptions and backfill Java parse failures with LLMs, retaining the original analysis and provenance metadata.
 - Support mixed Python/Java repositories. Other language adapters and similarity reranking are future work, not current CLI features.
 
-## Installation
+## Install from GitHub (verified on macOS Apple Silicon)
 
-### Option 1 — Install from PyPI (recommended)
-
-The published package is available on **[PyPI — inspect4all](https://pypi.org/project/inspect4all/)**. With **Python 3.12+**, create an isolated environment and install it using pip:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install inspect4all
-inspect4all --help
-```
-
-On **2 November 2026**, `inspect4all==0.1.1` was successfully installed in a fresh Python 3.12 virtual environment on **macOS Apple Silicon**, without building the native `libenry` library separately. Its packaged native library worked for repository inspection. In that test, `inspect4all inspect --all -i d4py -o d4py_output` completed successfully and produced `repository_analysis.json`, `repository_analysis.html`, and `embedding_export.json`. Other platforms have not been independently verified in this test; platform-specific wheels may differ in availability.
-
-To try the tool directly on a real repository after installation:
-
-```bash
-git clone https://github.com/StreamingFlow/d4py.git
-inspect4all inspect --all -i d4py -o d4py_output
-ls -lh d4py_output/
-```
-
-**Static inspection does not need an LLM API key.** The optional `enrich` command requires an accessible and configured model endpoint, as described below.
-
-To upgrade a PyPI installation within the active environment:
-
-```bash
-python -m pip install --upgrade inspect4all
-```
-
-### Option 2 — Build and install from GitHub source
-
-Choose this method if you want to develop inspect4all, use unreleased source changes, or build the native language-detection library yourself. **Requirements:** Git, Python 3.12+, [uv](https://docs.astral.sh/uv/), [Go](https://go.dev/), Make, and a C compiler (CGo). On macOS, Go can be installed with Homebrew:
+**Requirements:** Git, Python 3.12+, [uv](https://docs.astral.sh/uv/), [Go](https://go.dev/) compiler, `make` and a C toolchain (CGo). On macOS you can install Go with Homebrew:
 
 ```bash
 brew install go
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-On Ubuntu/Debian, ensure Git, Make, a C compiler, and a sufficiently recent Go compiler are installed. The Makefile supports Linux, but a fresh Linux installation was not independently tested here. Native Windows installation is not yet documented.
+On Ubuntu/Debian, install Git, Make, a C toolchain and a sufficiently recent Go compiler (distribution package versions vary). Then install uv as above. The Linux path is supported by the Makefile but **has not yet been independently verified** here. Native Windows installation is not yet documented.
+
+**Clone, build the native language detector, and install:**
 
 ```bash
 git clone https://github.com/SemanticRepoHub/inspect4all.git
@@ -65,9 +36,9 @@ inspect4all inspect --help
 inspect4all enrich --help
 ```
 
-> When **building from source**, the order matters: `make libenry` builds the platform-specific library before Python packaging. This does **not** apply to the verified prebuilt PyPI wheel on macOS Apple Silicon. A direct `uv tool install git+https://...` may still fail because it does not run the native build step first.
+> The order matters: `make libenry` builds a platform-specific native library required by the wheel build. **Direct `uv tool install git+https://...` is not yet the recommended method**, because it does not run that native build step automatically. This exact clone/build/install procedure was verified on macOS Apple Silicon on 2 November 2026.
 
-To update a source installation:
+To update your installed source version:
 
 ```bash
 cd /path/to/inspect4all
@@ -77,8 +48,6 @@ uv tool install --force .
 ```
 
 ## Test 1: Inspect a repository (NO API key)
-
-The following bundled examples are available **after cloning the GitHub repository**; run them from the repository root. If you installed only from PyPI, start with the d4py example above or another local repository.
 
 **Bundled Python fixture:**
 
@@ -181,19 +150,27 @@ Inspect the real schema (rather than assuming example fields):
 python3 -m json.tool python_inspect/repository_analysis.json | head -100
 ```
 
-See [the runnable examples](examples/README.md) and [an explicitly illustrative enrichment example](examples/illustrative-enrichment.json). Model-produced outputs can differ across models and runs.
+For the full field-by-field explanation, see the [metadata schema and Phase 2 provenance guide](docs/METADATA_SCHEMA.md). See [the runnable examples](examples/README.md) and [an explicitly illustrative enrichment example](examples/illustrative-enrichment.json). Model-produced outputs can differ across models and runs.
 
 ## Development and documentation
 
-- [User guide](docs/USER_GUIDE.md) — Installation, inspection, and enrichment
-- [Output formats](docs/OUTPUT_FORMATS.md) — JSON, HTML, embedding exports, and metadata provenance
-- [Technical reference](docs/technical-reference.md) — Architecture, CLI options, and language adapters
-- [Evaluation](docs/EVALUATION.md) — Study design, findings, and limitations
-- [Evaluation evidence](docs/evaluation-evidence.md) — Supporting results and methodology
-- [Troubleshooting](docs/TROUBLESHOOTING.md) — Common problems
-- [Real-world d4py example](examples/d4py-real-world/README.md) — Inspection and optional enrichment
-- [Legacy GitLab and EIDF deployment](docs/legacy-gitlab-deployment.md) — Historical internal instructions
-- [Experiments](experiments/README.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+### User documentation
+
+- [User guide](docs/USER_GUIDE.md) — installation and usage
+- [Understanding outputs](docs/OUTPUT_FORMATS.md) — JSON, HTML and provenance
+- [Metadata field dictionary](docs/METADATA_SCHEMA.md) — every major Phase 1 field, Phase 2 provenance markers, and real urllib3/d4py examples
+- [Evaluation and limitations](docs/EVALUATION.md) — dissertation findings
+- [Troubleshooting](docs/TROUBLESHOOTING.md) — common errors
+- [Verified d4py enrichment example](examples/d4py-real-world/verified-two-records.json)
+
+
+- [Complete original technical reference](docs/technical-reference.md) — architecture, CLI flags, internal EIDF/GitLab deployments and release procedures. Some internal instructions are retained for reference and are not the public installation path.
+- [Architecture](docs/architecture.md)
+- [Adding a programming language](docs/ADDING_LANGUAGES.md) — adapter interface, registration points, examples and contributor checklist
+- [Experiments](experiments/README.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security reporting](SECURITY.md)
+- [Citation](CITATION.cff)
 
 Run local checks after `make libenry`:
 
@@ -206,20 +183,19 @@ Some live LLM smoke tests require credentials and can incur cost; they are not p
 
 ## Limitations
 
-Python and Java adapters are implemented; other languages may be detected but not structurally analysed. LLM-generated information is uncertain and optional. Source builds require compiling a native library; a prebuilt PyPI wheel has been verified on macOS Apple Silicon, but availability and operation on other platforms have not been independently verified here. Native Windows support is not yet documented.
+Python and Java adapters are implemented; other languages may be detected but not structurally analysed. LLM-generated information is uncertain and optional. Fresh source installation requires a native build; one-command binary distribution and native Windows support are not yet documented as available.
 
-## Cite inspect4all
+## Documentation
 
-**Version 0.1.1** has been archived on Zenodo and can be cited using its
-[version-specific DOI](https://doi.org/10.5281/zenodo.23895264).
-For a citation representing all releases of the software, use the
-[all-versions DOI](https://doi.org/10.5281/zenodo.23895263).
-
-> Zhang, H. and Filgueira, R. (2026). *inspect4all: Unified Repository Metadata Extraction with Provenance-Aware Enrichment* (Version 0.1.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23895264
-
-For machine-readable citation metadata, see [CITATION.cff](CITATION.cff).
-The [GitHub v0.1.1 release](https://github.com/SemanticRepoHub/inspect4all/releases/tag/v0.1.1)
-and the [PyPI distribution](https://pypi.org/project/inspect4all/) are also available.
+- [User guide](docs/USER_GUIDE.md) — Installation and usage.
+- [Output formats](docs/OUTPUT_FORMATS.md) — JSON, HTML and provenance.
+- [Metadata schema and field meanings](docs/METADATA_SCHEMA.md) — Phase 1/Phase 2 dictionaries and real examples.
+- [Technical reference](docs/technical-reference.md) — Architecture, CLI and extension development.
+- [Adding new languages](docs/ADDING_LANGUAGES.md) — step-by-step guide with code links.
+- [Evaluation](docs/EVALUATION.md) — Study design and findings.
+- [Evaluation evidence](docs/evaluation-evidence.md) — Detailed supporting evidence.
+- [Troubleshooting](docs/TROUBLESHOOTING.md) — Common problems.
+- [Legacy GitLab and EIDF deployment](docs/legacy-gitlab-deployment.md) — Historical internal procedures.
 
 ## Licence
 
