@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    container: quay.io/pypa/manylinux_2_28_x86_64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Go and uv
+        run: |
+          curl -LsSf https://go.dev/dl/go1.24.0.linux-amd64.tar.gz | tar -C /usr/local -xz
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "/usr/local/go/bin" >> "$GITHUB_PATH"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Build wheel
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          make libenry
+          uv build --wheel
+          auditwheel repair dist/*.whl -w wheelhouse/
+      - name: Smoke test
+        run: |
+          uv tool install wheelhouse/*.whl
+          inspect4all inspect --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-linux-x86_64
+          path: wheelhouse/*.whl
+
+  build-macos:
+    strategy:
+      matrix:
+        os: [macos-14, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+          cache: false
+      - uses: astral-sh/setup-uv@v6
+      - run: make libenry
+      - run: uv build --wheel
+      - name: Smoke test
+        run: |
+          uv tool install dist/*.whl
+          inspect4all inspect --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.os }}
+          path: dist/*.whl
+
+  publish:
+    needs: [build-linux, build-macos]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
