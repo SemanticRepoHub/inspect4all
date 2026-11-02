@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "Please cite the inspect4all repository or a versioned archive when available."
+title: "inspect4all: Repository inspection and optional LLM enrichment"
+type: software
+repository-code: "https://github.com/SemanticRepoHub/inspect4all"
+license: BSD-3-Clause
+# Maintainers: add verified authors, ORCIDs and archive DOI before release.
