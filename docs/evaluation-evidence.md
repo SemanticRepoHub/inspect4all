@@ -1,4 +1,4 @@
-# Evaluation Evidence 
+# Evaluation Evidence
 
 
 | Evaluation | Reported result | Scope / caveat |
@@ -9,6 +9,6 @@
 | Java parser-gap backfill | Completed 197 of 199 files | Three-repository evaluation; parser-oracle comparison |
 | Java recovered structure | Type recall 0.978 and method F1 0.972 | Oracle-defined scope, not a universal correctness guarantee |
 
-For exact experiment setup, confidence intervals, sampling, judge prompts, full limitations and attribution, contact the authors. 
+For exact experiment setup, confidence intervals, sampling, judge prompts, full limitations and attribution, contact the authors.
 
 The two-record d4py enrichment example is an **additional demonstration**, not part of those aggregate evaluation statistics.
