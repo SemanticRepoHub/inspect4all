@@ -1,0 +1,22 @@
+name: Build macOS Intel wheel
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v0.1.0
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+      - uses: astral-sh/setup-uv@v6
+      - run: make libenry
+      - run: uv build --wheel
+      - run: uv tool install dist/*.whl && inspect4all inspect --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-macos-intel
+          path: dist/*.whl
