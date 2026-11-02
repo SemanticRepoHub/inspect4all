@@ -4,24 +4,43 @@ stages:
   - build
   - publish
 
+# Paths whose changes should trigger CI. A commit that touches none of these
+# (e.g. a docs-only commit changing just Markdown) creates no pipeline.
+# GitLab `changes` is "any-of" with no negation, so this is an allow-list of
+# code/build/config paths rather than a `**/*.md` deny-list — a deny-list would
+# also skip mixed commits that touch both code and Markdown. Add new top-level
+# code/config paths here so they keep triggering CI.
+.ci-relevant-changes: &ci-relevant-changes
+  - "src/**/*"
+  - "tests/**/*"
+  - "scripts/**/*"
+  - "Dockerfile"
+  - "docker-compose.yaml"
+  - ".dockerignore"
+  - "Makefile"
+  - "hatch_build.py"
+  - "pyproject.toml"
+  - "uv.lock"
+  - "package.json"
+  - "package-lock.json"
+  - ".python-version"
+  - ".gitlab-ci.yml"
+  - ".pre-commit-config.yaml"
+  - ".gitattributes"
+
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      changes:
-        - "*.md"
-        - "**/*.md"
-      when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - "*.md"
-        - "**/*.md"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    # Tags always run — release build/publish must not be skipped by content.
     - if: $CI_COMMIT_TAG
+    # MRs and default-branch pushes run only when a CI-relevant (non-docs) path
+    # changes; a Markdown-only commit matches nothing here, so no pipeline runs.
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes: *ci-relevant-changes
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes: *ci-relevant-changes
 
 # ---------------------------------------------------------------------------
-# Base template: shared by all Python / uv jobs
+# Base templates
 # ---------------------------------------------------------------------------
 .uv-base:
   image: python:3.12-slim
@@ -72,6 +91,35 @@ type-check:
 test:
   extends: .uv-base
   stage: test
+  before_script:
+    - apt-get update && apt-get install -y git golang-go gcc make
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    - pip install --quiet "uv>=0.7,<0.8"
+    - uv sync --dev --frozen
+    - |
+      if [ ! -f src/inspect4all/libs/libenry.so ]; then
+        make libenry
+      fi
+      if [ ! -f src/inspect4all/libs/libenry.so ]; then
+        echo "ERROR: libenry.so missing after build step"
+        exit 1
+      fi
+  cache:
+    - key:
+        files:
+          - uv.lock
+      paths:
+        - .venv/
+        - .cache/uv/
+    - key: pip-uv
+      paths:
+        - .cache/pip/
+    - key:
+        files:
+          - Makefile
+        prefix: libenry-linux
+      paths:
+        - src/inspect4all/libs/
   script:
     - >
       uv run pytest
@@ -91,20 +139,60 @@ test:
 
 # ===== build stage =====
 
-build-package:
+build-package-linux:
   extends: .uv-base
   stage: build
+  before_script:
+    - apt-get update && apt-get install -y git golang-go gcc make
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    - git fetch --unshallow --tags origin
+    - pip install --quiet "uv>=0.7,<0.8"
+    - uv sync --dev --frozen
+    - |
+      if [ ! -f src/inspect4all/libs/libenry.so ]; then
+        make libenry
+      fi
+      if [ ! -f src/inspect4all/libs/libenry.so ]; then
+        echo "ERROR: libenry.so missing after build step"
+        exit 1
+      fi
+  cache:
+    - key:
+        files:
+          - uv.lock
+      paths:
+        - .venv/
+        - .cache/uv/
+    - key: pip-uv
+      paths:
+        - .cache/pip/
+    - key:
+        files:
+          - Makefile
+        prefix: libenry-linux
+      paths:
+        - src/inspect4all/libs/
   script:
-    - uv build
+    - uv build --wheel
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 7 days
+
+publish-internal:
+  extends: .uv-base
+  stage: build
+  needs:
+    - build-package-linux
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+  script:
     - uv publish
       --publish-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
       --username gitlab-ci-token
       --password "$CI_JOB_TOKEN"
       dist/*
-  artifacts:
-    paths:
-      - dist/
-    expire_in: 7 days
 
 build-docker:
   stage: build
@@ -112,7 +200,10 @@ build-docker:
   tags:
     - docker
   needs:
-    - build-package
+    - build-package-linux
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
   before_script:
     # Register QEMU for ARM64 support on x86 host
     - docker run --rm --privileged tonistiigi/binfmt --install all
@@ -125,7 +216,7 @@ build-docker:
     - git config --global --add safe.directory "$CI_PROJECT_DIR"
   script:
     - |
-      RAW_PKG_VERSION=$(ls dist/*.whl | head -1 | sed 's/.*-\([^-]*\)-py3.*/\1/')
+      RAW_PKG_VERSION=$(ls dist/*.whl | head -1 | sed 's/.*inspect4all-\([^-]*\)-py3.*/\1/')
       DOCKER_PKG_VERSION=$(echo "$RAW_PKG_VERSION" | tr '+' '_')
 
       if [ -n "$CI_COMMIT_TAG" ]; then
@@ -133,12 +224,12 @@ build-docker:
       else
         IMAGE_TAG="$CI_REGISTRY_IMAGE:$DOCKER_PKG_VERSION"
       fi
-      echo "To push docker tag: $DOCKER_PKG_VERSION"
+      echo "Building docker image with version: $RAW_PKG_VERSION (tag: $DOCKER_PKG_VERSION)"
 
       docker buildx build \
       --platform linux/amd64,linux/arm64 \
       --target production \
-      --build-arg SETUPTOOLS_SCM_PRETEND_VERSION=$RAW_PKG_VERSION \
+      --build-arg SETUPTOOLS_SCM_PRETEND_VERSION="$RAW_PKG_VERSION" \
       --tag "$IMAGE_TAG" \
       --tag "$CI_REGISTRY_IMAGE:latest" \
       --cache-from type=registry,ref=$CI_REGISTRY_IMAGE:buildcache \
@@ -159,7 +250,7 @@ publish-pypi:
   tags:
     - prod
   needs:
-    - build-package
+    - build-package-linux
   rules:
     - if: $CI_COMMIT_TAG
       when: manual

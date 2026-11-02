@@ -1,7 +1,66 @@
 """Core functionality for inspect4all."""
 
 from inspect4all.core.config import Settings
+from inspect4all.core.constants import DEFAULT_IGNORE_DIRS, EmbeddingMode
+from inspect4all.core.interfaces import (
+    EnrichmentProcessor,
+    LanguageAdapter,
+    ParseResult,
+    SoftwareTypeResult,
+)
+from inspect4all.core.models import (
+    Dependency,
+    Documentation,
+    Enrichment,
+    ExceptionDoc,
+    FieldInfo,
+    FileAnalysis,
+    FileInfo,
+    FileTreeEntry,
+    FunctionInfo,
+    ImportInfo,
+    InvocationEntry,
+    LicenseInfo,
+    LicenseMatch,
+    MainInfo,
+    ParamDoc,
+    ParameterInfo,
+    ReadmeFile,
+    RepositoryAnalysis,
+    ReturnDoc,
+    TestEntry,
+    TypeInfo,
+)
+from inspect4all.core.options import InspectOptions
 
 __all__ = [
+    "DEFAULT_IGNORE_DIRS",
+    "Dependency",
+    "Documentation",
+    "EmbeddingMode",
+    "Enrichment",
+    "EnrichmentProcessor",
+    "ExceptionDoc",
+    "FieldInfo",
+    "FileAnalysis",
+    "FileInfo",
+    "FileTreeEntry",
+    "FunctionInfo",
+    "ImportInfo",
+    "InspectOptions",
+    "InvocationEntry",
+    "LanguageAdapter",
+    "LicenseInfo",
+    "LicenseMatch",
+    "MainInfo",
+    "ParamDoc",
+    "ParameterInfo",
+    "ParseResult",
+    "ReadmeFile",
+    "RepositoryAnalysis",
+    "ReturnDoc",
     "Settings",
+    "SoftwareTypeResult",
+    "TestEntry",
+    "TypeInfo",
 ]

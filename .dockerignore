@@ -6,7 +6,12 @@
 __pycache__
 *.py[cod]
 *$py.class
-*.so
+# Native language-detection libraries: the Linux .so is built in the Dockerfile
+# enry stage; local mac/windows binaries must not leak into the image.
+# Recursive globs are required — a leading *.ext only matches the context root.
+**/*.so
+**/*.dylib
+**/*.dll
 .Python
 .venv
 venv/

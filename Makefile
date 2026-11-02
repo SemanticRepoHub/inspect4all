@@ -1,4 +1,17 @@
-.PHONY: help install dev-install test test-cov lint format type-check clean build pre-commit-install pre-commit-run all-checks docker-build docker-build-multiplatform docker-down docker-test docker-lint
+.PHONY: help install dev-install test smoke test-cov lint format type-check clean build libenry pre-commit-install pre-commit-run all-checks docker-build docker-build-multiplatform docker-down docker-test docker-lint
+
+# go-enry release used to build the language-detection shared library
+GO_ENRY_VERSION ?= v2.9.4
+
+# Shared-library extension is platform-specific; keep this in sync with
+# default_lib_name() in src/inspect4all/discovery/enry.py.
+ifeq ($(OS),Windows_NT)
+	LIBENRY_NAME := libenry.dll
+else ifeq ($(shell uname -s),Darwin)
+	LIBENRY_NAME := libenry.dylib
+else
+	LIBENRY_NAME := libenry.so
+endif
 
 # Default target
 # .DEFAULT_GOAL := build
@@ -16,6 +29,9 @@ dev-install: ## Install development dependencies
 
 test: ## Run tests
 	uv run pytest
+
+smoke: ## Run ground-truth smoke validation (requires dissertation dataset)
+	uv run pytest -m smoke tests/smoke
 
 test-cov: ## Run tests with coverage
 	uv run pytest --cov=src --cov-report=term-missing --cov-report=html
@@ -49,11 +65,33 @@ clean: ## Clean build artifacts
 build: ## Build wheel and sdist for release
 	uv build
 
+libenry: ## Build the go-enry shared library into src/inspect4all/libs/ (requires Go)
+	rm -rf build/go-enry
+	git clone --quiet --depth 1 --branch $(GO_ENRY_VERSION) \
+		https://github.com/go-enry/go-enry.git build/go-enry
+	cd build/go-enry/shared && CGO_ENABLED=1 go build -buildmode=c-shared \
+		-o $(CURDIR)/src/inspect4all/libs/$(LIBENRY_NAME) enry.go
+	rm -f $(CURDIR)/src/inspect4all/libs/libenry.h
+	rm -rf build/go-enry
+
 docker-build: ## Build production Docker image
-	docker build --target production -t inspect4all .
+	RAW_VERSION=$$(uv run python -c "from importlib.metadata import version; print(version('inspect4all'))" 2>/dev/null || echo "0.0.0"); \
+	DOCKER_VERSION=$$(echo "$$RAW_VERSION" | tr '+' '_'); \
+	docker build --target production \
+		-t inspect4all \
+		-t "inspect4all:$$DOCKER_VERSION" \
+		--build-arg "SETUPTOOLS_SCM_PRETEND_VERSION=$$RAW_VERSION" \
+		.
 
 docker-build-all: ## Build production image for multi-platform (amd64 and arm64)
-	docker buildx build --platform linux/amd64,linux/arm64 --target production -t inspect4all .
+	RAW_VERSION=$$(uv run python -c "from importlib.metadata import version; print(version('inspect4all'))" 2>/dev/null || echo "0.0.0"); \
+	DOCKER_VERSION=$$(echo "$$RAW_VERSION" | tr '+' '_'); \
+	docker buildx build --platform linux/amd64,linux/arm64 \
+		--target production \
+		-t inspect4all \
+		-t "inspect4all:$$DOCKER_VERSION" \
+		--build-arg "SETUPTOOLS_SCM_PRETEND_VERSION=$$RAW_VERSION" \
+		.
 
 docker-down: ## Stop Docker containers
 	docker compose down
@@ -70,7 +108,7 @@ pre-commit-install: ## Install pre-commit hooks
 pre-commit-run: ## Run pre-commit on all files
 	uv run pre-commit run --all-files
 
-all-checks: lint format-check type-check test ## Run all quality checks
+all-checks: lint format-check type-check test smoke ## Run all quality checks
 
 # Development workflow
 dev-setup: dev-install pre-commit-install ## Set up development environment

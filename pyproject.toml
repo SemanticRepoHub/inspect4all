@@ -12,6 +12,15 @@ dependencies = [
     "click>=8.3.1",
     "pydantic-settings>=2.12.0",
     "rich>=14.3.2",
+    "cffi>=1.17.0",
+    "docstring-parser>=0.16",
+    "gitpython>=3.1.0",
+    "javalang>=0.13.0",
+    "langchain-openai>=1.3.5",
+    "tree-sitter>=0.26.0",
+    "tree-sitter-java>=0.23.5",
+    "langchain>=1.3.14",
+    "json2html>=1.3.0",
 ]
 
 [project.scripts]
@@ -23,6 +32,20 @@ build-backend = "hatchling.build"
 
 [tool.hatch.version]
 source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+# The go-enry shared library is built by `make libenry` and is gitignored, so
+# it must be force-listed here or hatchling would omit it from the wheel.
+artifacts = [
+    "src/inspect4all/libs/*.so",
+    "src/inspect4all/libs/*.dylib",
+    "src/inspect4all/libs/*.dll",
+]
+
+[tool.hatch.build.hooks.custom]
+# hatch_build.py: stamps the wheel with the correct platform tag so that
+# Linux and macOS wheels can coexist on PyPI without colliding.
+path = "hatch_build.py"
 
 [dependency-groups]
 dev = [
@@ -37,6 +60,7 @@ dev = [
 target-version = "py312"
 line-length = 80
 src = ["src", "tests"]
+extend-exclude = ["tests/fixtures"]  # vendored third-party smoke-test repos
 
 [tool.ruff.lint]
 select = [
@@ -66,6 +90,14 @@ ignore = [
 [tool.ruff.lint.isort]
 known-first-party = ["inspect4all"]
 
+[tool.ruff.lint.flake8-type-checking]
+# Pydantic models resolve field annotations at runtime, so types used in
+# fields of BaseChatModel subclasses must stay as runtime imports.
+runtime-evaluated-base-classes = [
+    "pydantic.BaseModel",
+    "langchain_core.language_models.BaseChatModel",
+]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
@@ -92,7 +124,11 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = "-v --tb=short"
+addopts = '-v --tb=short -m "not smoke and not llm_smoke" --ignore=tests/fixtures'
+markers = [
+    "smoke: end-to-end validation against ground-truth repos (deselected by default; run with -m smoke)",
+    "llm_smoke: live enrichment against a local OpenAI-compatible server (opt-in; run with -m llm_smoke)",
+]
 
 [tool.coverage.run]
 source = ["src"]

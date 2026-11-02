@@ -108,3 +108,13 @@ __pycache__/
 .DS_Store
 /experiments/language-detection/libenry.dylib
 /experiments/inspect4py-experiment/kk
+
+# Local inspection outputs
+/d4py_inspect/
+/d4py_inspect_backup/
+
+# Native build artifacts
+/build/
+/src/inspect4all/libs/*.dylib
+/src/inspect4all/libs/*.so
+/src/inspect4all/libs/*.dll
