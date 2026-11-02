@@ -118,3 +118,6 @@ __pycache__/
 /src/inspect4all/libs/*.dylib
 /src/inspect4all/libs/*.so
 /src/inspect4all/libs/*.dll
+
+/python_inspect/
+/java_inspect/
