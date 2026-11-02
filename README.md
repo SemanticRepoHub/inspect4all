@@ -165,7 +165,7 @@ See [the runnable examples](examples/README.md) and [an explicitly illustrative 
 
 - [Complete original technical reference](docs/technical-reference.md) — architecture, CLI flags, internal EIDF/GitLab deployments and release procedures. Some internal instructions are retained for reference and are not the public installation path.
 - [Architecture](docs/architecture.md)
-- [MSc experiments](experiments/README.md)
+- [Experiments](experiments/README.md)
 - [Contributing](CONTRIBUTING.md)
 - [Security reporting](SECURITY.md)
 - [Citation](CITATION.cff)
