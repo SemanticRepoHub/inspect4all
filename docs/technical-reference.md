@@ -1,10 +1,9 @@
 # inspect4all — full technical reference
-[![Pipeline Status](https://git.ecdf.ed.ac.uk/semanticrepohub/inspect4all/badges/main/pipeline.svg)](https://git.ecdf.ed.ac.uk/semanticrepohub/inspect4all/-/pipelines/latest)
 [![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/)
 ![Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
-<img src="docs/images/logo.png" alt="logo" width="200"/>
+<img src="images/logo.png" alt="logo" width="200"/>
 
 Inspect4all is a single language-agnostic tool for inspecting and understanding software repositories.
 
@@ -31,7 +30,7 @@ inspect4all works only for **Python and Java projects** or a mix of these two la
 
 The work on `inspect4all` is organized into three distinct phases and phase 1 is futher separated into phase 1a and phase 1b:
 
-![inspect4all Processing Flow](docs/images/diss-overview.png)
+![inspect4all Processing Flow](images/diss-overview.png)
 
 1.  **Phase 1: Static Extraction (MVP)** — The core engine traverses the repository, identifies source files (using `go-enry`), and invokes language-specific adapters (Python/Java) to extract structural metadata into a unified JSON schema.
     - Phase 1a - Language Detection
@@ -41,12 +40,12 @@ The work on `inspect4all` is organized into three distinct phases and phase 1 is
 
 Below depicted a more details flow.
 
-![inspect4all Detailed Flow](docs/images/inspect4all-flow.png)
+![inspect4all Detailed Flow](images/inspect4all-flow.png)
 
 
 ## Architecture Overview
 
-![inspect4all Pipeline Architecture](docs/images/pipeline-architecture.png)
+![inspect4all Pipeline Architecture](images/pipeline-architecture.png)
 
 
 ## Quick Start
@@ -98,7 +97,7 @@ make docker-build
 
 ### Run the Tool (development)
 
-After building with `make build`:
+After installing the CLI (for example using `uv tool install --force .` after `make libenry`):
 
 ```bash
 inspect4all --help
@@ -112,7 +111,9 @@ uv run inspect4all --help
 uv run inspect4all inspect -i /path/to/repo
 ```
 
-### Run on EIDF
+### Run on EIDF (legacy/internal GitLab deployment)
+
+> **Note:** This section documents the original University of Edinburgh GitLab deployment. The links and registries below may require institutional permissions and are not the public GitHub installation method. For public source installation, see [the main README](../README.md).
 
 Two approaches are available on an EIDF Ubuntu Linux VM. Docker (Approach A) requires no Python setup but needs registry authentication. Installing via uvx (Approach B) is lighter if Docker is not available or not preferred.
 
