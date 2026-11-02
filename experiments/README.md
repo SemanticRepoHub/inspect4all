@@ -1,12 +1,12 @@
 # Preliminary Experiments
 
-This directory contains the Proof of Concept (PoC) code and preliminary results and analysis for the experiments conducted during the Feasibility Study and as part of the dissertation. These experiments validate the core technical components or concepts of the **inspect4all** tool or related dissertation work.
+This directory contains the Proof of Concept (PoC) code and preliminary results and analysis for the experiments conducted during the Feasibility Study and as part of our work. These experiments validate the core technical components or concepts of the **inspect4all** tool.
 
 ## Experiments Overview
 
 | # | Experiment | Goal | Key Insight |
 |---|------------|------|-------------|
-| 1 | [ Baseline Tool Exploration (Inspect4py and ReoSim4Py)](inspect4py-experiment/) | Familiarise and validate inspect4py and RepoSim4Py tools | The full extraction to similarity pipeline is well validated and the dissertation can build directly on proven foundations. |
+| 1 | [ Baseline Tool Exploration (Inspect4py and ReoSim4Py)](inspect4py-experiment/) | Familiarise and validate inspect4py and RepoSim4Py tools | The full extraction to similarity pipeline is well validated and this work build directly on proven foundations. |
 | 2 | [Tool Exploration (inspect4j)](inspect4j-experiment/) | Familiarise with other inspect4py variants (specific experiment with inspect4j to assess suitability for reuse) | inspect4py and inspect4j are highly similar. Their schema compatibility and code reusability mean extraction logic does not need to be written from scratch. |
 | 3 | [Parser Suitability (tree-sitter)](treesitter-experiment/) | Assess and evaluate tree sitter for building a common AST layer (tested specifically for java) | Tree sitter provides syntactic uniformity but not semantic abstraction, and its API instability adds engineering risk for little benefit at this scope. |
 | 4 | [Language Detection](language-detection/) | Determine which language detection tools and libraries to use | go enry is the main library for language detection and its accuracy removes a source of implementation risk. |
