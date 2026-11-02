@@ -2,19 +2,30 @@ cff-version: 1.2.0
 message: "If you use inspect4all in your research, please cite this software."
 type: software
 title: "inspect4all: Unified Repository Metadata Extraction with Provenance-Aware Enrichment"
+
 authors:
   - given-names: Honglin
     family-names: Zhang
     affiliation: University of St Andrews
+    orcid: https://orcid.org/0009-0002-2129-8793
+
   - given-names: Rosa
     family-names: Filgueira
     affiliation: University of Edinburgh
+    orcid: https://orcid.org/0000-0002-5715-3046
+
 version: 0.1.1
+date-released: 2026-11-02
+doi: 10.5281/zenodo.23895264
+
 license: BSD-3-Clause
 repository-code: https://github.com/SemanticRepoHub/inspect4all
 url: https://pypi.org/project/inspect4all/
+
 keywords:
   - mining software repositories
   - repository metadata extraction
   - static analysis
   - software analysis
+  - large language models
+
