@@ -1,0 +1,16 @@
+{
+  "illustrative_only": true,
+  "note": "Not an exact inspect4all output file or schema fixture",
+  "function": "Calculator.add",
+  "documentation": {
+    "enrichments": [{
+      "source": "docstring_enricher",
+      "model": "example-model",
+      "content": {
+        "short_description": "Adds two integers and an offset.",
+        "params": {"a": "First integer", "b": "Second integer"},
+        "returns": "The computed sum"
+      }
+    }]
+  }
+}
