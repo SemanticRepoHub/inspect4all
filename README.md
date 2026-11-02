@@ -1,6 +1,6 @@
 # inspect4all
 
-[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://python.org) [![BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE) ![Work in progress](https://www.repostatus.org/badges/latest/wip.svg)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://python.org) [![BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE) [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23895264.svg)](https://doi.org/10.5281/zenodo.23895264)
 
 **Inspect Python and Java code repositories, export structured metadata, and optionally enrich missing documentation using an LLM.** The core inspection is entirely usable **without an OpenAI API key**. LLM enrichment is opt-in and needs an accessible model endpoint (for OpenAI, an API key and API credits).
 
@@ -185,21 +185,15 @@ See [the runnable examples](examples/README.md) and [an explicitly illustrative 
 
 ## Development and documentation
 
-### User documentation
-
-- [User guide](docs/USER_GUIDE.md) — installation and usage
-- [Understanding outputs](docs/OUTPUT_FORMATS.md) — JSON, HTML and provenance
-- [Evaluation and limitations](docs/EVALUATION.md) — study design, findings and limitations
-- [Troubleshooting](docs/TROUBLESHOOTING.md) — common errors
-- [Verified d4py enrichment example](examples/d4py-real-world/verified-two-records.json)
-
-
-- [Complete original technical reference](docs/technical-reference.md) — architecture, CLI flags, internal EIDF/GitLab deployments and release procedures. Some internal instructions are retained for reference and are not the public installation path.
-- [Architecture](docs/architecture.md)
-- [Experiments](experiments/README.md)
-- [Contributing](CONTRIBUTING.md)
-- [Security reporting](SECURITY.md)
-- [Citation](CITATION.cff)
+- [User guide](docs/USER_GUIDE.md) — Installation, inspection, and enrichment
+- [Output formats](docs/OUTPUT_FORMATS.md) — JSON, HTML, embedding exports, and metadata provenance
+- [Technical reference](docs/technical-reference.md) — Architecture, CLI options, and language adapters
+- [Evaluation](docs/EVALUATION.md) — Study design, findings, and limitations
+- [Evaluation evidence](docs/evaluation-evidence.md) — Supporting results and methodology
+- [Troubleshooting](docs/TROUBLESHOOTING.md) — Common problems
+- [Real-world d4py example](examples/d4py-real-world/README.md) — Inspection and optional enrichment
+- [Legacy GitLab and EIDF deployment](docs/legacy-gitlab-deployment.md) — Historical internal instructions
+- [Experiments](experiments/README.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 Run local checks after `make libenry`:
 
@@ -214,15 +208,18 @@ Some live LLM smoke tests require credentials and can incur cost; they are not p
 
 Python and Java adapters are implemented; other languages may be detected but not structurally analysed. LLM-generated information is uncertain and optional. Source builds require compiling a native library; a prebuilt PyPI wheel has been verified on macOS Apple Silicon, but availability and operation on other platforms have not been independently verified here. Native Windows support is not yet documented.
 
-## Documentation
+## Cite inspect4all
 
-- [User guide](docs/USER_GUIDE.md) — Installation and usage.
-- [Output formats](docs/OUTPUT_FORMATS.md) — JSON, HTML and provenance.
-- [Technical reference](docs/technical-reference.md) — Architecture, CLI and extension development.
-- [Evaluation](docs/EVALUATION.md) — Study design and findings.
-- [Evaluation evidence](docs/evaluation-evidence.md) — Detailed supporting evidence.
-- [Troubleshooting](docs/TROUBLESHOOTING.md) — Common problems.
-- [Legacy GitLab and EIDF deployment](docs/legacy-gitlab-deployment.md) — Historical internal procedures.
+**Version 0.1.1** has been archived on Zenodo and can be cited using its
+[version-specific DOI](https://doi.org/10.5281/zenodo.23895264).
+For a citation representing all releases of the software, use the
+[all-versions DOI](https://doi.org/10.5281/zenodo.23895263).
+
+> Zhang, H. and Filgueira, R. (2026). *inspect4all: Unified Repository Metadata Extraction with Provenance-Aware Enrichment* (Version 0.1.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23895264
+
+For machine-readable citation metadata, see [CITATION.cff](CITATION.cff).
+The [GitHub v0.1.1 release](https://github.com/SemanticRepoHub/inspect4all/releases/tag/v0.1.1)
+and the [PyPI distribution](https://pypi.org/project/inspect4all/) are also available.
 
 ## Licence
 
