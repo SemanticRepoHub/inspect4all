@@ -183,6 +183,16 @@ Some live LLM smoke tests require credentials and can incur cost; they are not p
 
 Python and Java adapters are implemented; other languages may be detected but not structurally analysed. LLM-generated information is uncertain and optional. Fresh source installation requires a native build; one-command binary distribution and native Windows support are not yet documented as available.
 
+## Documentation
+
+- [User guide](docs/USER_GUIDE.md) — Installation and usage.
+- [Output formats](docs/OUTPUT_FORMATS.md) — JSON, HTML and provenance.
+- [Technical reference](docs/technical-reference.md) — Architecture, CLI and extension development.
+- [Evaluation](docs/EVALUATION.md) — Study design and findings.
+- [Evaluation evidence](docs/evaluation-evidence.md) — Detailed supporting evidence.
+- [Troubleshooting](docs/TROUBLESHOOTING.md) — Common problems.
+- [Legacy GitLab and EIDF deployment](docs/legacy-gitlab-deployment.md) — Historical internal procedures.
+
 ## Licence
 
 BSD-3-Clause, see [LICENSE](LICENSE). See repository history and [citation metadata](CITATION.cff) for attribution; third-party example repository licences must also be respected.
