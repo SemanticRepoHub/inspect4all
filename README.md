@@ -154,6 +154,15 @@ See [the runnable examples](examples/README.md) and [an explicitly illustrative 
 
 ## Development and documentation
 
+### User documentation
+
+- [User guide](docs/USER_GUIDE.md) — installation and usage
+- [Understanding outputs](docs/OUTPUT_FORMATS.md) — JSON, HTML and provenance
+- [Evaluation and limitations](docs/EVALUATION.md) — dissertation findings
+- [Troubleshooting](docs/TROUBLESHOOTING.md) — common errors
+- [Verified d4py enrichment example](examples/d4py-real-world/verified-two-records.json)
+
+
 - [Complete original technical reference](docs/technical-reference.md) — architecture, CLI flags, internal EIDF/GitLab deployments and release procedures. Some internal instructions are retained for reference and are not the public installation path.
 - [Architecture](docs/architecture.md)
 - [MSc experiments](experiments/README.md)

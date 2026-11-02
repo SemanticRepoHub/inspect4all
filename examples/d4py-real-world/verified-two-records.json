@@ -1,0 +1,51 @@
+{
+  "about": "Real, provided d4py enrichment results; not deterministic gold labels",
+  "model": "gpt-5.6-luna",
+  "date": "2026-11-02",
+  "records": [
+    {
+      "qualified_name": "prov.test.rtxcorr.xcorr_parallel.create_wf",
+      "file": "prov/test/rtxcorr/xcorr_parallel.py",
+      "original_documentation": null,
+      "enriched_documentation": {
+        "params": {},
+        "raises": [],
+        "tags": {},
+        "enrichments": [
+          {
+            "source": "docstring_enricher",
+            "timestamp": "2026-11-02T12:59:56.190553+00:00",
+            "model": "gpt-5.6-luna",
+            "content": {
+              "short_description": "Builds and returns a workflow graph connecting data sources through correlation, matrix, and maximum-clique processing components.",
+              "params": {},
+              "returns": "The configured workflow graph."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "qualified_name": "prov.test.rtxcorr.xcorr_parallel.create_graph_with_prov",
+      "file": "prov/test/rtxcorr/xcorr_parallel.py",
+      "original_documentation": null,
+      "enriched_documentation": {
+        "params": {},
+        "raises": [],
+        "tags": {},
+        "enrichments": [
+          {
+            "source": "docstring_enricher",
+            "timestamp": "2026-11-02T12:59:57.871399+00:00",
+            "model": "gpt-5.6-luna",
+            "content": {
+              "short_description": "Creates a workflow graph configured for provenance tracking and returns it.",
+              "params": {},
+              "returns": "The provenance-configured workflow graph."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
