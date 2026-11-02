@@ -76,6 +76,8 @@ Alongside the bundled Python and Java mini-examples, we provide a **real, reprod
 
 ![Real-world d4py inspection and optional LLM enrichment](docs/images/d4py-real-world.svg)
 
+*Note: Example results may vary by repository revision, model, and configuration.*
+
 The diagram distinguishes **static inspection (no API key)** from **optional LLM enrichment (a configured compatible model endpoint and credentials)**. The reported two successful enrichments come from the supplied d4py test output, not an assertion that every run produces identical text.
 
 ```bash
