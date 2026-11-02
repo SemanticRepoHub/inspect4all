@@ -1,14 +1,200 @@
 # inspect4all
-[![Pipeline Status](https://git.ecdf.ed.ac.uk/semanticrepohub/inspect4all/badges/main/pipeline.svg)](https://git.ecdf.ed.ac.uk/semanticrepohub/inspect4all/-/pipelines/latest)
 [![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/)
 ![Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 <img src="docs/images/logo.png" alt="logo" width="200"/>
 
-Inspect4all is a single language-agnostic tool for inspecting and understanding software repositories.
+Inspect4all is a language-agnostic tool for inspecting and understanding software repositories. It currently supports Python and Java, including mixed-language repositories.
 
 inspect4all is a **clean-room redesign** based on the extraction approaches and techniques of [inspect4py](https://github.com/SoftwareUnderstanding/inspect4py) (Python) and inspect4j (Java): rather than wrapping either tool, it rebuilds their structural extraction from first principles under one unified, language-agnostic schema. It extracts relevant information and metadata (functions/APIs, documentation such as README, dependencies, licenses, etc.) from software repositories in multiple programming languages, and outputs structured JSON for downstream analysis.
+
+## Installation — start here
+
+**GitHub:** https://github.com/SemanticRepoHub/inspect4all
+
+The **tested installation method** is to clone the repository, build its native language-detection library, and install the Python command-line tool with `uv`. This is the method validated on **macOS (Apple Silicon) on 2 November 2026**, using a clean GitHub clone. Linux builds are supported by the Makefile but should be independently verified. Windows installation has not yet been validated.
+
+> **Important:** Running `uv tool install git+https://github.com/SemanticRepoHub/inspect4all.git` directly may fail, because the Python wheel build expects the native `libenry` library to have been built first. **Use the clone + `make libenry` method below** until prebuilt platform wheels or automated native builds are available.
+
+### 1. Prerequisites
+
+- **Python 3.12+**
+- **Git**
+- **Go 1.21+**, `make`, and a C compiler (to build [go-enry](https://github.com/go-enry/go-enry) with CGO)
+- **uv** (installed below if needed)
+
+On macOS with Homebrew, install the build tools if they are missing:
+
+```bash
+brew install go
+```
+
+The macOS Command Line Tools provide `make` and a C compiler; if these are missing, install them with `xcode-select --install`.
+
+On Linux, install Go, Git, `make`, a working C compiler, and Python 3.12+ using your distribution's preferred method. The exact Linux dependency commands depend on the distribution.
+
+Install `uv` if needed (macOS/Linux):
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+If `uv` is not found after installation, restart your shell or run:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Check the tools:
+
+```bash
+python3 --version
+git --version
+go version
+uv --version
+```
+
+### 2. Clone and install inspect4all
+
+Run these commands in a terminal:
+
+```bash
+git clone https://github.com/SemanticRepoHub/inspect4all.git
+cd inspect4all
+make libenry
+uv tool install --force .
+```
+
+`make libenry` downloads the pinned `go-enry` source (currently v2.9.4) and builds the native shared library under `src/inspect4all/libs/`. On macOS this is `libenry.dylib`; on Linux it is `libenry.so`. This generated binary is **not committed** to GitHub.
+
+`uv tool install --force .` installs the `inspect4all` executable into an isolated tool environment. Once installed, you can run the executable from any directory.
+
+Verify that both inspection and enrichment are available:
+
+```bash
+inspect4all --help
+inspect4all inspect --help
+inspect4all enrich --help
+```
+
+The top-level help should list `inspect`, `enrich`, and `run`.
+
+### 3. Test 1 — Inspect a repository (no API key required)
+
+Use the path to a local Python or Java repository:
+
+```bash
+inspect4all inspect --all \
+  -i /absolute/path/to/your/repository \
+  -o repository_inspect
+```
+
+A successful inspection reports `Inspection complete!` and writes files to `repository_inspect/`, typically:
+
+| Output | Purpose |
+|---|---|
+| `repository_analysis.json` | Unified structural analysis of the repository |
+| `repository_analysis.html` | Browsable HTML presentation |
+| `embedding_export.json` | Embedding-ready records for downstream analysis |
+
+Check the outputs:
+
+```bash
+ls -lh repository_inspect/
+```
+
+**Verified example:** On 2 November 2026, the freshly installed GitHub version inspected the `d4py` repository in approximately 4.7 seconds and produced all three files. The elapsed time varies by machine and repository.
+
+### 4. Test 2 — Optional LLM enrichment
+
+Enrichment is a **separate optional phase**. It requires access to an OpenAI-compatible LLM endpoint and may incur API costs. The inspection step above works without an LLM.
+
+For a hosted OpenAI-compatible endpoint, set the values appropriate to your provider and model:
+
+```bash
+export INSPECT4ALL_LLM_BASE_URL="https://api.openai.com/v1"
+export INSPECT4ALL_LLM_MODEL="YOUR_SUPPORTED_MODEL"
+export INSPECT4ALL_LLM_MAX_TOKENS=4096
+```
+
+Configure `INSPECT4ALL_LLM_API_KEY` securely in your environment. Do **not** paste real API keys into documentation, commits, or public issue reports. Alternatively, configure a local OpenAI-compatible endpoint as described in [LLM Enrichment](#llm-enrichment-phase-2).
+
+Enrich at most two undocumented functions as a small test:
+
+```bash
+inspect4all enrich \
+  -i repository_inspect \
+  --max-records 2 \
+  --processors docstrings
+```
+
+Inspect the generated files:
+
+```bash
+ls -lh repository_inspect/
+diff -u repository_inspect/repository_analysis.json \
+  repository_inspect/repository_analysis.enriched.json
+```
+
+Enrichment adds provenance-tagged documentation to `repository_analysis.enriched.json`; it does not overwrite the original `repository_analysis.json`. The cache is stored in `enrichment_cache.jsonl`.
+
+### 5. Update, reinstall, or uninstall
+
+To update from GitHub, return to your existing **source clone** and rebuild the native library when needed:
+
+```bash
+cd /path/to/inspect4all
+git pull --ff-only
+make libenry
+uv tool install --force .
+```
+
+To remove the installed CLI:
+
+```bash
+uv tool uninstall inspect4all
+```
+
+Do not run `git pull` in a source checkout with uncommitted changes without first reviewing them.
+
+### Troubleshooting
+
+| Symptom | Cause / solution |
+|---|---|
+| `go: command not found` | Install Go and confirm `go version` works. |
+| `libenry.dylib not found` or `libenry.so not found` | Run `make libenry` **before** `uv tool install --force .`. |
+| `No rule to make target libenry` | You may have cloned an older commit; check `git log -1 --oneline` and update to the current GitHub `main`. |
+| `Got unexpected extra argument (inspect)` | An older inspect4all CLI may be installed. Update your checkout, rebuild, reinstall, and check `inspect4all --help`. |
+| `Path ... does not exist` | Use an existing **absolute path** with `-i`. |
+| `uv: command not found` | Restart the shell or add `$HOME/.local/bin` to `PATH`. |
+| LLM enrichment fails | Confirm endpoint accessibility, the exact model ID, API credentials, and available quota. Inspection remains usable without enrichment. |
+
+### Development and wheel builds
+
+After cloning and running `make libenry`, developers can install project dependencies and hooks:
+
+```bash
+make dev-setup
+```
+
+Run the CLI through the project environment:
+
+```bash
+uv run inspect4all inspect --help
+```
+
+For a distribution build, run:
+
+```bash
+make build
+```
+
+`make build` creates distribution files; it does **not** install a command globally. `uv tool install --force .` installs the CLI. The current native-library build must happen before wheel creation.
+
+For container development, see the Docker sections below. Docker is optional for the tested macOS source-install path.
+
+---
 
 ## Features
 
@@ -49,70 +235,9 @@ Below depicted a more details flow.
 ![inspect4all Pipeline Architecture](docs/images/pipeline-architecture.png)
 
 
-## Quick Start
+### Internal deployment on EIDF (legacy GitLab infrastructure)
 
-### Prerequisites
-
-- Python 3.12+
-- [uv](https://docs.astral.sh/uv/) package manager
-- [Go](https://go.dev/) 1.21+ (only to build the bundled language-detection library, see below)
-- Docker (optional, for containerized development)
-
-### Development Setup
-
-```bash
-# Clone and setup development environment
-make dev-setup
-```
-
-This installs all dependencies and configures pre-commit hooks. Pre-commit hooks enforce ruff linting on every commit.
-
-### Build the Language-Detection Library
-
-Discovery uses [go-enry](https://github.com/go-enry/go-enry) (GitHub's linguist
-port) through CFFI. The shared library is not tracked in git, so build it once
-for development work after cloning:
-
-```bash
-make libenry
-```
-
-This clones go-enry at the pinned tag (`GO_ENRY_VERSION`, currently v2.9.4),
-compiles its stock `shared/enry.go` c-shared wrapper with
-`go build -buildmode=c-shared`, and places `libenry.dylib` in
-`src/inspect4all/libs/`, where `discovery/enry.py` loads it from by default.
-
-The Makefile detects the platform automatically: it produces `libenry.dylib` on macOS and `libenry.so` on Linux.
-
-### Build the Tool
-
-To build the python wheel and package for `inspect4all`, run the make command below. Additionally, a docker image can also be built.
-
-```bash
-# Build python wheel and sdist
-make build
-
-# Build production Docker image
-make docker-build
-```
-
-### Run the Tool (development)
-
-After building with `make build`:
-
-```bash
-inspect4all --help
-inspect4all inspect -i /path/to/repo
-```
-
-During development, run directly with uv (no build step needed):
-
-```bash
-uv run inspect4all --help
-uv run inspect4all inspect -i /path/to/repo
-```
-
-### Run on EIDF
+The following EIDF instructions refer to **existing private GitLab package and container registries**, not the new public GitHub installation. For new users, start with [Installation — start here](#installation--start-here).
 
 Two approaches are available on an EIDF Ubuntu Linux VM. Docker (Approach A) requires no Python setup but needs registry authentication. Installing via uvx (Approach B) is lighter if Docker is not available or not preferred.
 
@@ -391,7 +516,7 @@ inspect4all inspect -i /path/to/repo -o out/ -ee -r -ld -rm --enrich
 | Command              | Description                                                     |
 | -------------------- | --------------------------------------------------------------- |
 | `make dev-setup`     | Setup development environment (install deps + pre-commit hooks) |
-| `uv run inspect4all` | Run inspect4all (pass flags directly, e.g. `inspect -i /path/to/repo`) |
+| `uv run inspect4all` | Run inspect4all (e.g. `uv run inspect4all inspect -i /path/to/repo`) |
 | `make test`          | Run tests                                                       |
 | `make test-cov`      | Run tests with coverage report                                  |
 
@@ -440,7 +565,9 @@ docker run --rm -v /path/to/repo:/data inspect4all inspect -i /data
 
 Open the project in VS Code, and select "Reopen in Container" when prompted, or use the Command Palette: `Dev Containers: Reopen in Container`.
 
-## Releasing
+## Releasing (current GitLab workflow; GitHub releases not yet configured)
+
+The procedure below describes the existing internal GitLab release pipeline. It is **not** an automated GitHub Actions release workflow. Do not assume that tagging GitHub publishes a wheel or PyPI package.
 
 This project uses [semver](https://semver.org/) with versions derived automatically from git tags via `hatch-vcs`.
 
@@ -460,7 +587,7 @@ git push origin v0.2.0
 
 The tag format must be `vMAJOR.MINOR.PATCH` (e.g., `v0.2.0`, `v1.0.0`). The `v` prefix is stripped automatically when setting the package version.
 
-### Multi-platform wheel distribution
+### Multi-platform wheel distribution (internal GitLab registry)
 
 `inspect4all` bundles `libenry`, a Go-compiled shared library (`libenry.so` on Linux, `libenry.dylib` on macOS). Because each wheel contains a platform-specific binary, Linux and macOS wheels are separate files and must both be published for users on either platform.
 
