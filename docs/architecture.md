@@ -109,7 +109,7 @@ The repository-level techniques follow the predecessor tools:
 
 The enrichment layer is organised around an `EnrichmentProcessor` abstract base class with a single method, `enrich(repo) -> RepositoryAnalysis`. Each processor is a **pure transformation**: it receives a `RepositoryAnalysis` and returns a modified copy without mutating the original. An `EnrichmentPipeline` chains processors in sequence; failed or timed-out records are logged and skipped, never aborting the run.
 
-**Matching technique to task.** The two enrichers use different techniques because their tasks differ — an agent is used only where tool use is genuinely required, otherwise a single direct prompt. Both were first built as ReAct agent loops; the switch away from the loop for docstrings, after weighing effectiveness against token cost and processing time, is reported as a finding in the dissertation.
+**Matching technique to task.** The two enrichers use different techniques because their tasks differ — an agent is used only where tool use is genuinely required, otherwise a single direct prompt. Both were first built as ReAct agent loops; the switch away from the loop for docstrings, after weighing effectiveness against token cost and processing time, is reported as a finding in our report.
 
 ### DocstringEnricher — Direct LLM generation
 
