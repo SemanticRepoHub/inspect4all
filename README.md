@@ -13,18 +13,47 @@
 - Optionally generate missing function/method descriptions and backfill Java parse failures with LLMs, retaining the original analysis and provenance metadata.
 - Support mixed Python/Java repositories. Other language adapters and similarity reranking are future work, not current CLI features.
 
-## Install from GitHub (verified on macOS Apple Silicon)
+## Installation
 
-**Requirements:** Git, Python 3.12+, [uv](https://docs.astral.sh/uv/), [Go](https://go.dev/) compiler, `make` and a C toolchain (CGo). On macOS you can install Go with Homebrew:
+### Option 1 — Install from PyPI (recommended)
+
+The published package is available on **[PyPI — inspect4all](https://pypi.org/project/inspect4all/)**. With **Python 3.12+**, create an isolated environment and install it using pip:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install inspect4all
+inspect4all --help
+```
+
+On **2 November 2026**, `inspect4all==0.1.1` was successfully installed in a fresh Python 3.12 virtual environment on **macOS Apple Silicon**, without building the native `libenry` library separately. Its packaged native library worked for repository inspection. In that test, `inspect4all inspect --all -i d4py -o d4py_output` completed successfully and produced `repository_analysis.json`, `repository_analysis.html`, and `embedding_export.json`. Other platforms have not been independently verified in this test; platform-specific wheels may differ in availability.
+
+To try the tool directly on a real repository after installation:
+
+```bash
+git clone https://github.com/StreamingFlow/d4py.git
+inspect4all inspect --all -i d4py -o d4py_output
+ls -lh d4py_output/
+```
+
+**Static inspection does not need an LLM API key.** The optional `enrich` command requires an accessible and configured model endpoint, as described below.
+
+To upgrade a PyPI installation within the active environment:
+
+```bash
+python -m pip install --upgrade inspect4all
+```
+
+### Option 2 — Build and install from GitHub source
+
+Choose this method if you want to develop inspect4all, use unreleased source changes, or build the native language-detection library yourself. **Requirements:** Git, Python 3.12+, [uv](https://docs.astral.sh/uv/), [Go](https://go.dev/), Make, and a C compiler (CGo). On macOS, Go can be installed with Homebrew:
 
 ```bash
 brew install go
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-On Ubuntu/Debian, install Git, Make, a C toolchain and a sufficiently recent Go compiler (distribution package versions vary). Then install uv as above. The Linux path is supported by the Makefile but **has not yet been independently verified** here. Native Windows installation is not yet documented.
-
-**Clone, build the native language detector, and install:**
+On Ubuntu/Debian, ensure Git, Make, a C compiler, and a sufficiently recent Go compiler are installed. The Makefile supports Linux, but a fresh Linux installation was not independently tested here. Native Windows installation is not yet documented.
 
 ```bash
 git clone https://github.com/SemanticRepoHub/inspect4all.git
@@ -36,9 +65,9 @@ inspect4all inspect --help
 inspect4all enrich --help
 ```
 
-> The order matters: `make libenry` builds a platform-specific native library required by the wheel build. **Direct `uv tool install git+https://...` is not yet the recommended method**, because it does not run that native build step automatically. This exact clone/build/install procedure was verified on macOS Apple Silicon on 2 November 2026.
+> When **building from source**, the order matters: `make libenry` builds the platform-specific library before Python packaging. This does **not** apply to the verified prebuilt PyPI wheel on macOS Apple Silicon. A direct `uv tool install git+https://...` may still fail because it does not run the native build step first.
 
-To update your installed source version:
+To update a source installation:
 
 ```bash
 cd /path/to/inspect4all
@@ -48,6 +77,8 @@ uv tool install --force .
 ```
 
 ## Test 1: Inspect a repository (NO API key)
+
+The following bundled examples are available **after cloning the GitHub repository**; run them from the repository root. If you installed only from PyPI, start with the d4py example above or another local repository.
 
 **Bundled Python fixture:**
 
@@ -158,7 +189,7 @@ See [the runnable examples](examples/README.md) and [an explicitly illustrative 
 
 - [User guide](docs/USER_GUIDE.md) — installation and usage
 - [Understanding outputs](docs/OUTPUT_FORMATS.md) — JSON, HTML and provenance
-- [Evaluation and limitations](docs/EVALUATION.md) — dissertation findings
+- [Evaluation and limitations](docs/EVALUATION.md) — study design, findings and limitations
 - [Troubleshooting](docs/TROUBLESHOOTING.md) — common errors
 - [Verified d4py enrichment example](examples/d4py-real-world/verified-two-records.json)
 
@@ -181,7 +212,7 @@ Some live LLM smoke tests require credentials and can incur cost; they are not p
 
 ## Limitations
 
-Python and Java adapters are implemented; other languages may be detected but not structurally analysed. LLM-generated information is uncertain and optional. Fresh source installation requires a native build; one-command binary distribution and native Windows support are not yet documented as available.
+Python and Java adapters are implemented; other languages may be detected but not structurally analysed. LLM-generated information is uncertain and optional. Source builds require compiling a native library; a prebuilt PyPI wheel has been verified on macOS Apple Silicon, but availability and operation on other platforms have not been independently verified here. Native Windows support is not yet documented.
 
 ## Documentation
 
