@@ -70,6 +70,27 @@ inspect4all inspect --all -i /absolute/path/to/your/repository -o repo_inspect
 
 You should see `repository_analysis.json`, `repository_analysis.html`, and `embedding_export.json` with `--all`. In a fresh GitHub source installation, a local d4py checkout was inspected successfully in approximately **4.713 seconds** (one test, not a reproducible performance benchmark).
 
+## Real-world example — inspect and enrich StreamingFlow/d4py
+
+Alongside the bundled Python and Java mini-examples, we provide a **real, reproducible repository inspection** using [StreamingFlow/d4py](https://github.com/StreamingFlow/d4py), an open-source scientific-workflow codebase.
+
+![Real-world d4py inspection and optional LLM enrichment](docs/images/d4py-real-world.svg)
+
+The diagram distinguishes **static inspection (no API key)** from **optional LLM enrichment (a configured compatible model endpoint and credentials)**. The reported two successful enrichments come from the supplied d4py test output, not an assertion that every run produces identical text.
+
+```bash
+git clone https://github.com/StreamingFlow/d4py.git demo-d4py
+inspect4all inspect --all -i demo-d4py -o d4py_inspect
+```
+
+This completed successfully on macOS Apple Silicon on 2 November 2026 and produced the JSON, HTML and embedding export outputs. Two functions were then enriched with `gpt-5.6-luna` using the optional LLM processor (two successes recorded in the cache):
+
+```bash
+inspect4all enrich -i d4py_inspect --max-records 2 --processors docstrings
+```
+
+**See [the complete real-world walkthrough and actual before/after metadata](examples/d4py-real-world/README.md)**. An API key is **not** required for inspection; enrichment requires an authorised OpenAI-compatible LLM service and its credentials. The University of Edinburgh ELM gateway may be used if configured and authorised; a University key is not interchangeable with a direct OpenAI API key.
+
 ## Test 2: Optional LLM enrichment (OpenAI API key required for OpenAI)
 
 ![LLM enrichment](docs/images/enrichment.svg)

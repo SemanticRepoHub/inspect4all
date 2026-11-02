@@ -1,0 +1,62 @@
+{
+  "source_repository": "https://github.com/StreamingFlow/d4py",
+  "analyzed_repository": "d4py",
+  "run_date": "2026-11-02",
+  "processor": "docstrings",
+  "max_records": 2,
+  "model": "gpt-5.6-luna",
+  "records": [
+    {
+      "file_path": "prov/test/rtxcorr/xcorr_parallel.py",
+      "qualified_name": "prov.test.rtxcorr.xcorr_parallel.create_wf",
+      "before": {
+        "documentation": null
+      },
+      "after": {
+        "documentation": {
+          "params": {},
+          "raises": [],
+          "tags": {},
+          "enrichments": [
+            {
+              "source": "docstring_enricher",
+              "timestamp": "2026-11-02T12:59:56.190553+00:00",
+              "model": "gpt-5.6-luna",
+              "content": {
+                "short_description": "Builds and returns a workflow graph connecting data sources through correlation, matrix, and maximum-clique processing components.",
+                "params": {},
+                "returns": "The configured workflow graph."
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "file_path": "prov/test/rtxcorr/xcorr_parallel.py",
+      "qualified_name": "prov.test.rtxcorr.xcorr_parallel.create_graph_with_prov",
+      "before": {
+        "documentation": null
+      },
+      "after": {
+        "documentation": {
+          "params": {},
+          "raises": [],
+          "tags": {},
+          "enrichments": [
+            {
+              "source": "docstring_enricher",
+              "timestamp": "2026-11-02T12:59:57.871399+00:00",
+              "model": "gpt-5.6-luna",
+              "content": {
+                "short_description": "Creates a workflow graph configured for provenance tracking and returns it.",
+                "params": {},
+                "returns": "The provenance-configured workflow graph."
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
