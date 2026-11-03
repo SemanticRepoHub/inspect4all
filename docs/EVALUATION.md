@@ -1,4 +1,4 @@
-# Evaluation: dissertation evidence and limits
+# Evaluation: evidence and limits
 
 
 | Study | Reported result | Conditions / interpretation |
